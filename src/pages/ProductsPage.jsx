@@ -36,7 +36,6 @@ const ProductList = styled.ul`
 
 export default function ProductsPage() {
   const productStore = useProductStore();
-
   const { products } = productStore;
 
   useEffect(() => {

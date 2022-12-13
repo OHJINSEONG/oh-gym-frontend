@@ -4,21 +4,41 @@ import Store from './Store';
 export default class LectureStore extends Store {
   constructor() {
     super();
-    this.lectures = [];
+    this.userLectures = [];
+    this.trainerLectures = [];
+    this.dailyUserLectures = [];
+    this.dailyEmptySchedule = [];
   }
 
-  async register(product, order) {
-    const lectures = await apiService.register(product, order);
+  async fetchUserLectures(userId) {
+    const userLectures = await apiService.fetchUserLectures(userId);
 
-    this.lectures = lectures;
+    this.userLectures = userLectures;
 
     this.publish();
   }
 
-  async fetchLectures() {
-    const lectures = await apiService.fetchLectures();
+  async makeUserSchedule(userId, date) {
+    const lectures = await apiService.fetchUserLectures(userId);
 
-    this.lectures = lectures;
+    this.dailyUserLectures = lectures
+      .filter((lecture) => lecture.date === date)
+      .map((lecture) => ({
+        ...lecture,
+        time: (lecture.time.startsWith('0')
+          ? lecture.time.replace('0', '')
+          : lecture.time),
+      }));
+
+    this.publish();
+  }
+
+  async fetchTrainerSchedule(trainerId, date) {
+    const schedules = await apiService.fetchTrainerSchedules(trainerId, date);
+
+    console.log(schedules);
+
+    this.dailyEmptySchedule = schedules.emptySchedules;
 
     this.publish();
   }

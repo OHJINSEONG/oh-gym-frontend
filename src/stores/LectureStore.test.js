@@ -9,21 +9,27 @@ describe('lectureStore', () => {
     lectureStore = new LectureStore();
   });
 
-  describe('fetchLectures', () => {
-    it('fetchLectures', async () => {
-      await lectureStore.fetchLectures();
+  describe('fetchTrainerSchedule', () => {
+    it('fetchTrainerSchedule', async () => {
+      await lectureStore.fetchTrainerSchedule(1, '2022-12-09');
 
-      expect(lectureStore.lectures.length).toEqual(2);
+      expect(lectureStore.dailyEmptySchedule.length).toEqual(3);
     });
   });
 
-  describe('register', () => {
-    it('register', async () => {
-      await lectureStore.register({ trainer: '오진욱' }, { id: 1 });
+  describe('fetchUserLectures', () => {
+    it('fetchUserLectures', async () => {
+      await lectureStore.fetchUserLectures(1);
 
-      expect(lectureStore.lectures.length).toEqual(2);
-      expect(lectureStore.lectures[0].trainer).toEqual('오진욱');
-      expect(lectureStore.lectures[1].trainer).toEqual('오진욱');
+      expect(lectureStore.userLectures.length).toEqual(2);
+    });
+  });
+
+  describe('makeUserSchedule', () => {
+    it('makeUserSchedule', async () => {
+      await lectureStore.makeUserSchedule(1, '2022-12-08');
+
+      expect(lectureStore.dailyUserLectures.length).toEqual(2);
     });
   });
 });

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import useOrderStore from '../hooks/useOrderStore';
 import useProductStore from '../hooks/useProductStore';
-import { lectureStore } from '../stores/LectureStore';
 
 const Container = styled.div`
   display: flex;
@@ -26,64 +25,33 @@ export default function ProductImformationPage() {
   const orderStore = useOrderStore();
   const { productId } = useParams();
 
-  const { product } = productStore;
+  const { productImformation } = productStore;
+  const { options } = productImformation;
 
   useEffect(() => {
     productStore.findProduct(productId);
   }, []);
 
-  const handleClick = async () => {
-    await orderStore.create(productId);
-    lectureStore.register(product, orderStore.order);
+  const handleClick = () => {
+    orderStore.create(productId);
   };
+
+  console.log(productStore);
 
   return (
     <Container>
       <div>
         <p>
-          {product.title}
+          {productImformation.title}
         </p>
-        {product.dateOfUse
-          ? (
-            <select name="dateOfUse">
-              <option value="">옵션</option>
-              <option id="1">3개월</option>
-            </select>
-          )
-          : null}
-        {product.ptTimes
-          ? (
-            <select className="ptTimes">
-              <option value="">옵션1</option>
-              <option id="1">12회</option>
-            </select>
-          )
-          : null}
-        {product.dayOfWeek
-          ? (
-            <select className="dayOfWeek">
-              <option value="">옵션2</option>
-              <option id="1">월 수 금</option>
-            </select>
-          )
-          : null}
-        {product.time
-          ? (
-            <select className="time">
-              <option value="">옵션3</option>
-              <option id="1">11:00</option>
-            </select>
-          )
-          : null}
-        <div>
-          <label htmlFor="input-startDate">
-            상품 시작일
-          </label>
-          <input id="input-startDate" type="text" />
-        </div>
-        <p>
-          {product.price}
-        </p>
+        <select name="options">
+          <option>옵션</option>
+          {Array.isArray(options)
+            ? (options.map((option) => (
+              <option key={option.id}>{option.dateOfUse}</option>
+            )))
+            : null}
+        </select>
       </div>
       <button type="button" onClick={handleClick}>결제하기</button>
     </Container>

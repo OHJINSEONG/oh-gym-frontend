@@ -1,25 +1,19 @@
-// import axios from 'axios';
-// import { apiService } from '../services/ApiService';
-// import Store from './Store';
+import { apiService } from '../services/ApiService';
+import Store from './Store';
 
-// export default class UserStore extends Store {
-//   constructor() {
-//     super();
-//     this.myProduct = {};
-//     this.mySchedule = [];
-//   }
+export default class UserStore extends Store {
+  constructor() {
+    super();
+    this.user = {};
+  }
 
-//   // async order(product) {
-//   //   // await apiService.
+  async find() {
+    const user = await apiService.findUser();
 
-//   //   // this.myProduct = product;
+    this.user = user;
 
-//   //   // this.publish();
-//   // }
+    this.publish();
+  }
+}
 
-//   // async makeScheldule(ptTimes, time, dayOfWeek) {
-
-//   // }
-// }
-
-// export const userStore = new UserStore();
+export const userStore = new UserStore();
