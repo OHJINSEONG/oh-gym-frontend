@@ -14,6 +14,8 @@ export default class ApiService {
   async findProduct(productId) {
     const { data } = await axios.get(`${baseUrl}/products/${productId}`);
 
+    console.log(data);
+
     return data;
   }
 
@@ -35,22 +37,51 @@ export default class ApiService {
     return data;
   }
 
-  async register(product, order) {
-    const { data } = await axios.post(`${baseUrl}/lectures`, {
-      orderId: order.id,
-      trainer: product.trainer,
-      consumer: '',
-      ptTimes: product.ptTimes,
-      timeOfPt: product.time,
-      dayOfWeek: product.dayOfWeek,
-      ptStartDate: order.ptStartDate,
-    });
+  async fetchTrainerSchedules(trainerId, date) {
+    const { data } = await axios.get(`${baseUrl}/schedules?trainerId=${trainerId}&date=${date}`);
+
+    console.log(data);
 
     return data;
   }
 
-  async fetchLectures() {
-    const { data } = await axios.get(`${baseUrl}/lectures`);
+  async fetchUserLectures(userId) {
+    const { data } = await axios.get(`${baseUrl}/users/${userId}/lectures`);
+
+    console.log(data);
+
+    return data;
+  }
+
+  async fetchDateLectures(date) {
+    const { data } = await axios.get(`${baseUrl}/lectures?date=${date}`);
+
+    console.log(data);
+
+    return data;
+  }
+
+  async findUser() {
+    const { data } = await axios.get(`${baseUrl}/users`);
+
+    console.log(data);
+
+    return data;
+  }
+
+  async findTrainer(trainerId) {
+    const { data } = await axios.get(`${baseUrl}/trainers/${trainerId}`);
+
+    console.log(data);
+
+    return data;
+  }
+
+  async createRequest(requestData) {
+    const { data } = await axios.post(`${baseUrl}/requests`, requestData);
+
+    console.log(requestData);
+    console.log(data);
 
     return data;
   }
