@@ -11,15 +11,17 @@ describe('orderStore', () => {
 
   describe('fetchOrders', () => {
     it('fetchOrders', async () => {
-      await orderStore.fetchOrders();
+      await orderStore.fetchOrders(1);
 
-      // expect(orderStore.orders.length).toEqual(2);
+      expect(orderStore.orders.length).toEqual(1);
     });
   });
 
   describe('create', () => {
     it('create', async () => {
-      await orderStore.create(1);
+      await orderStore.create({
+        userId: 1, productId: 1, option: [],
+      });
 
       expect(orderStore.order.productId).toEqual(1);
     });

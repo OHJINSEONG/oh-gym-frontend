@@ -1,6 +1,7 @@
 import { setupServer } from 'msw/node';
 
 import config from '../config';
+import dateFormatter from './utils/DateFormatter';
 
 const { rest } = require('msw');
 
@@ -130,8 +131,6 @@ const server = setupServer(
       const message = `${senderName}님 ${time.getFullYear()}년 ${time.getMonth()
          + 1}월 ${time.getDate()}일 ${time.getHours()}시에 피티 등록 요청.`;
 
-      console.log(message);
-
       return res(
         ctx.json({
           id: 1,
@@ -150,8 +149,8 @@ const server = setupServer(
   }),
 
   rest.get(`${baseUrl}/schedules`, async (req, res, ctx) => {
-    const { trainerId } = await req.url.searchParams.get('trainerId');
-    const { date } = await req.url.searchParams.get('date');
+    const trainerId = await req.url.searchParams.get('trainerId');
+    const date = await req.url.searchParams.get('date');
 
     return res(ctx.json({
       emptySchedules: [
@@ -160,11 +159,19 @@ const server = setupServer(
     }));
   }),
 
-  rest.get(`${baseUrl}/users`, async (req, res, ctx) => res(
-    ctx.json({
-      id: 1, userName: '오진성', name: '오진성', ptTimes: 12, periodOfUse: 90,
-    }),
-  )),
+  rest.get(`${baseUrl}/users/:userId`, async (req, res, ctx) => {
+    const { userId } = await req.params;
+
+    if (userId === '1') {
+      return res(
+        ctx.json({
+          id: 1, userName: '오진성', name: '오진성', ptTimes: 12, periodOfUse: 90,
+        }),
+      );
+    }
+
+    return res(ctx.status(400));
+  }),
 
   rest.get(`${baseUrl}/trainers/:trainerId`, async (req, res, ctx) => {
     const { trainerId } = req.params;
@@ -178,6 +185,142 @@ const server = setupServer(
     }
 
     return res(ctx.status(400));
+  }),
+
+  rest.get(`${baseUrl}/orders`, async (req, res, ctx) => {
+    const userId = req.url.searchParams.get('userId');
+
+    if (userId === '1') {
+      return res(
+        ctx.json(
+          [
+            {
+              id: 1,
+              productInformation: { id: 1, title: '피티', trainerId: 1 },
+              optionInformation: {
+                id: 1, ptTimes: 12, price: 360000, useOfDate: 90, type: '피티',
+              },
+            },
+          ],
+        ),
+      );
+    }
+
+    return res(ctx.status(400));
+  }),
+
+  rest.get(`${baseUrl}/diarys`, async (req, res, ctx) => {
+    const userId = req.url.searchParams.get('userId');
+    const date = req.url.searchParams.get('date');
+
+    if (userId === '1') {
+      return res(
+        ctx.json(
+          {
+            diary: { id: 1, date },
+            exerciseInformations: [],
+          },
+        ),
+      );
+    }
+
+    return res(ctx.status(400));
+  }),
+
+  rest.post(`${baseUrl}/diarys`, async (req, res, ctx) => {
+    const {
+      date, exerciseInformations,
+    } = await req.json();
+
+    return res(
+      ctx.json(
+        {
+          diary: { id: 1, date },
+          exerciseInformations,
+        },
+      ),
+    );
+  }),
+
+  rest.get(`${baseUrl}/exercises`, async (req, res, ctx) => {
+    const diaryId = req.url.searchParams.get('diaryId');
+
+    return res(
+      ctx.json([
+        {
+          exercise: {
+            id: 1, name: '풀업', status: 'CREATED', type: '등',
+          },
+          sets: [{
+            id: 1, weight: 90, reqs: 10, status: 'CREATED', setNumber: 1,
+          }],
+        },
+      ]),
+    );
+  }),
+
+  rest.get(`${baseUrl}/lockers`, async (req, res, ctx) => res(
+    ctx.json([
+      {
+        id: 1, lockerNumber: 3,
+      },
+    ]),
+  )),
+
+  rest.patch(`${baseUrl}/lockers/:lockerId`, async (req, res, ctx) => {
+    const { lockerId } = req.params;
+    const { userId, requestMessage } = await req.json();
+
+    return res(
+      ctx.json(
+        {
+          id: lockerId, lockerNumber: 3, status: 'RESERVATED',
+        },
+      ),
+    );
+  }),
+
+  rest.get(`${baseUrl}/pt-tickets`, async (req, res, ctx) => res(
+    ctx.json([
+      {
+        id: 1, ptTimes: 12, periodOfUse: 30,
+      },
+      {
+        id: 2, ptTimes: 30, periodOfUse: 90,
+      },
+    ]),
+  )),
+
+  rest.get(`${baseUrl}/pt-tickets/:ptTicketId`, async (req, res, ctx) => {
+    const { ptTicketId } = req.params;
+
+    return res(
+      ctx.json(
+        {
+          id: 1, ptTimes: 12, periodOfUse: 30,
+        },
+      ),
+    );
+  }),
+
+  rest.get(`${baseUrl}/locker-tickets`, async (req, res, ctx) => res(
+    ctx.json(
+      {
+        id: 1, ptTimes: 12, periodOfUse: 30,
+      },
+    ),
+  )),
+
+  rest.patch(`${baseUrl}/locker-tickets/:lockerTicketId`, async (req, res, ctx) => {
+    const { lockerTicketId } = req.params;
+
+    return res(
+      ctx.json(
+        {
+          id: 1, ptTimes: 30, startDate: '2022-12-25',
+        },
+      ),
+    );
   }),
 );
 

@@ -5,7 +5,7 @@ export default class ProductStore extends Store {
   constructor() {
     super();
     this.products = [];
-    this.productImformation = {};
+    this.productInformation = {};
   }
 
   async fetchProducts() {
@@ -17,9 +17,9 @@ export default class ProductStore extends Store {
   }
 
   async findProduct(productId) {
-    const productImformation = await apiService.findProduct(productId);
+    const productInformation = await apiService.findProduct(productId);
 
-    this.productImformation = productImformation;
+    this.productInformation = productInformation;
 
     this.publish();
   }

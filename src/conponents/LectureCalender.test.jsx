@@ -1,4 +1,4 @@
-const { render, screen, waitFor } = require('@testing-library/react');
+const { render, screen } = require('@testing-library/react');
 const { lectureStore } = require('../stores/LectureStore');
 const { default: LectureCalender } = require('./LectureCalender');
 

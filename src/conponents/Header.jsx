@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
 import useUserStore from '../hooks/useUserStore';
 
 const Container = styled.div`
@@ -10,18 +11,28 @@ const Container = styled.div`
   width: 100%;
   height: 30px;
   background-color: white;
-  border-bottom: solid 1px black;
 
   justify-content: space-between;
 
   ul{
       display: flex;
       justify-content: space-between;
-      width: 200px;
+      width: 100%;
+      height: 100%;
+      
+    li{
+      display: flex;
+      justify-content:center;
+      align-items: center;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid black;
+    }
   }
   
   div{
     display: flex;
+    width: auto;
     justify-content: space-between;
   }
 `;
@@ -30,43 +41,44 @@ const Wrapper = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 1000px;
-  height: 40px;
+  width: 100%;
+  height: 100%;
 `;
 
 export default function Header() {
-  const userStore = useUserStore();
+  const location = useLocation();
+  const navigator = useNavigate();
 
-  const { user } = userStore;
+  const path = location.pathname;
 
-  useEffect(() => {
-    userStore.find();
-  }, []);
+  if (path.includes('myPage/')) {
+    return (
+      <Container>
+        <Wrapper>
+          <ul>
+            <li>
+              <button type="button" onClick={() => navigator('/myPage')}>MyPage</button>
+            </li>
+            <li>
+              <button type="button">뭐할까</button>
+            </li>
+          </ul>
+        </Wrapper>
+      </Container>
+    );
+  }
 
   return (
     <Container>
       <Wrapper>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">설정</Link>
           </li>
           <li>
-            <Link to="/products">Product</Link>
-          </li>
-          <li>
-            <Link to="/myPage">MyPage</Link>
+            <Link to="/products">알림</Link>
           </li>
         </ul>
-        <div>
-          <p>
-            pt횟수:
-            {user.ptTimes}
-          </p>
-          <p>
-            이용일:
-            {user.periodOfUse}
-          </p>
-        </div>
       </Wrapper>
     </Container>
   );

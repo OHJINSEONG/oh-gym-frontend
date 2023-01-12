@@ -1,5 +1,5 @@
 const { render } = require('@testing-library/react');
-const { default: Header } = require('./Header');
+const { default: BottomNavigator } = require('./BottomNavigator');
 
 const navigate = jest.fn();
 
@@ -17,6 +17,6 @@ jest.mock('react-router-dom', () => ({
 
 describe('header', () => {
   it('render home', () => {
-    render(<Header />);
+    render(<BottomNavigator />);
   });
 });

@@ -1,19 +1,24 @@
 /* eslint-disable no-unused-expressions */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 import useLectureStore from '../hooks/useLectureStore';
 
 import useMassageStore from '../hooks/useMessageStore';
-import useScheduleStore from '../hooks/useScheduleStore';
-import useTrainerStore from '../hooks/useTrainerStore';
 
 const Container = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  width: 80%;
+  height: 200px;
+  border: 1px solid black;
+
+h1{
+  margin-bottom: 10px;
+}
 `;
 
 const Schedules = styled.ul`
@@ -24,7 +29,7 @@ const Schedules = styled.ul`
   height: 30px;
   border-radius: 15px;
   margin-top: 5px;
-  border : none
+  border : 1px solid black
   }
 `;
 
@@ -32,6 +37,7 @@ const Button = styled.button`
   margin-top: 30px;
   width: 150px;
   height: 40px;
+  border : 1px solid black
 `;
 
 export default function ChangeLecture({ todayDate }) {
@@ -50,9 +56,11 @@ export default function ChangeLecture({ todayDate }) {
       : setPtTime(schedule);
   };
 
+  console.log(dailyEmptySchedule);
+
   const handleClickAdd = () => {
+    console.log(date);
     messageStore.sendRequest({
-      senderId: 1,
       receiverId: 1,
       type: 'requestPt',
       context: date,
@@ -63,9 +71,10 @@ export default function ChangeLecture({ todayDate }) {
   return (
     <Container>
       <div>
-        {Array.isArray(dailyEmptySchedule)
+        {dailyEmptySchedule.length
           ? (
             <div>
+              <h1>PT 예약 가능한 시간</h1>
               <Schedules>
                 {dailyEmptySchedule.map((schedule) => (
                   <li key={schedule}>
@@ -76,13 +85,12 @@ export default function ChangeLecture({ todayDate }) {
               <Button type="button" onClick={handleClickAdd}>추가</Button>
             </div>
           )
-          : null}
+          : (
+            <div>
+              피티 가능한 시간이 없다리
+            </div>
+          )}
       </div>
     </Container>
   );
 }
-
-// Todo: time을 이용하여 트레이너의 빈 시간을 가져온다.
-// 어떻게 트레이너 시간을 가져ㅑ올까
-// 시작 날짜와 종료 날짜 시간과 요일로 만들수 있다.....
-// 이것을 하나의 스케줄

@@ -1,6 +1,6 @@
 const { render, waitFor, screen } = require('@testing-library/react');
 
-const { default: ProductImformationPage } = require('./ProductImformationPage');
+const { default: ProductInformationPage } = require('./ProductInformationPage');
 
 const navigator = jest.fn();
 
@@ -11,8 +11,8 @@ jest.mock('react-router-dom', () => ({
   }),
 }));
 
-test('ProductImformationPage', async () => {
-  render(<ProductImformationPage />);
+test('ProductInformationPage', async () => {
+  render(<ProductInformationPage />);
 
   await waitFor(() => {
     screen.getByText('피티');

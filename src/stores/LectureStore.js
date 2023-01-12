@@ -18,8 +18,8 @@ export default class LectureStore extends Store {
     this.publish();
   }
 
-  async makeUserSchedule(userId, date) {
-    const lectures = await apiService.fetchUserLectures(userId);
+  async makeUserSchedule(date) {
+    const lectures = await apiService.fetchUserLectures();
 
     this.dailyUserLectures = lectures
       .filter((lecture) => lecture.date === date)
@@ -35,8 +35,6 @@ export default class LectureStore extends Store {
 
   async fetchTrainerSchedule(trainerId, date) {
     const schedules = await apiService.fetchTrainerSchedules(trainerId, date);
-
-    console.log(schedules);
 
     this.dailyEmptySchedule = schedules.emptySchedules;
 

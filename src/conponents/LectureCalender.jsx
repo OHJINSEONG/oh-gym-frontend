@@ -13,7 +13,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 500px;
+  padding-top: 50px;
 `;
 
 export default function LectureCalender() {
@@ -29,7 +29,7 @@ export default function LectureCalender() {
 
   useEffect(() => {
     lectureStore.fetchTrainerSchedule(1, todayDate);
-    lectureStore.makeUserSchedule(1, todayDate);
+    lectureStore.makeUserSchedule(todayDate);
   }, [value]);
 
   if (!userLectures) {

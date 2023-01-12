@@ -7,10 +7,32 @@ export default class UserStore extends Store {
     this.user = {};
   }
 
-  async find() {
+  async fetchUser() {
     const user = await apiService.findUser();
 
     this.user = user;
+
+    this.publish();
+  }
+
+  async register(kakaoAccessToken) {
+    const accessToken = await apiService.createUser(kakaoAccessToken);
+
+    this.publish();
+
+    return accessToken;
+  }
+
+  async kakaoLogin(code) {
+    const loginInfomation = await apiService.kakaoLogin(code);
+
+    this.publish();
+
+    return loginInfomation;
+  }
+
+  async kakaoLogout(kakaoAccessToken) {
+    await apiService.kakaoLogout(kakaoAccessToken);
 
     this.publish();
   }

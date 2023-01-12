@@ -1,34 +1,41 @@
 /* eslint-disable no-unused-expressions */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
-import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
 import useLectureStore from '../hooks/useLectureStore';
 
 const Container = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 100px;
+    
 `;
 
 const Schedules = styled.ul`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  
+  div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    border: 1px solid black;
+  }
 
   button {
-  width: 80px;
-  height: 30px;
-  border-radius: 15px;
-  margin-top: 5px;
-  border : none
+    margin-top: 30px;
+    width: 150px;
+    height: 40px;
   }
-`;
-
-const Button = styled.button`
-  margin-top: 30px;
-  width: 150px;
-  height: 40px;
 `;
 
 export default function MyLectures() {
@@ -36,14 +43,12 @@ export default function MyLectures() {
 
   const { dailyUserLectures } = lectureStore;
 
-  const [lectureId, setLectureId] = useState(0);
-
-  const handleClickMyLecture = (id) => {
-    setLectureId(id);
-  };
+  useEffect(() => {
+    console.log(dailyUserLectures);
+  }, []);
 
   const handleClickCancle = () => {
-    lectureStore.cansle(lectureId);
+    lectureStore.cancel(dailyUserLectures[0].id);
   };
 
   return (
@@ -51,14 +56,14 @@ export default function MyLectures() {
       <Schedules>
         {dailyUserLectures.length
           ? (
-            <ul>
-              {dailyUserLectures.map((lecture) => (
-                <li key={lecture.id}>
-                  <button type="button" onClick={() => handleClickMyLecture(lecture.id)}>{lecture.time}</button>
-                </li>
-              ))}
-              <Button type="button" onClick={handleClickCancle}>취소</Button>
-            </ul>
+            <div>
+              <p>
+                나의 PT시간 :
+                {' '}
+                {dailyUserLectures[0].time}
+              </p>
+              <button type="button" onClick={handleClickCancle}>취소 하기</button>
+            </div>
           )
           : null}
       </Schedules>

@@ -14,9 +14,9 @@ const Container = styled.form`
 const ProductList = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  width: 840px;
+  width: 100%;
   
   li{
     width: 100px;

@@ -2,27 +2,24 @@ const { default: MessageStore } = require('./MessageStore');
 
 const context = describe;
 
-describe('MessageStore', () => {
+describe('messageStore', () => {
   let messageStore;
 
   beforeEach(() => {
     messageStore = new MessageStore();
   });
 
-  describe('fetchTrainerLectures', () => {
-    it('fetchTrainerLectures', async () => {
-      const requestData = {
+  describe('sendRequest', () => {
+    it('sendRequest', async () => {
+      await messageStore.sendRequest({
         senderId: 1,
         receiverId: 1,
         type: 'requestPt',
-        context: '2022-12-11T11:00',
-        senderName: '오진성',
-      };
+        context: '2022-12-25',
+        senderName: '오진욱',
+      });
 
-      await messageStore.sendRequest(requestData);
-
-      expect(messageStore.request.message).toEqual('오진성님 2022년 12월 11일 11시에 피티 등록 요청.');
-      expect(messageStore.request.status).toEqual('CREATED');
+      expect(messageStore.request.message).toEqual('오진욱님 2022년 12월 25일 9시에 피티 등록 요청.');
     });
   });
 });

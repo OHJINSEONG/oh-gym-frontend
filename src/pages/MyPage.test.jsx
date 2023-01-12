@@ -1,8 +1,5 @@
 const { render, screen, waitFor } = require('@testing-library/react');
-const { lectureStore } = require('../stores/LectureStore');
-const { trainerStore } = require('../stores/TrainerStore');
-const { userStore } = require('../stores/UserStore');
-const { default: CalenderPage } = require('./MyPage');
+const { default: MyPage } = require('./MyPage');
 
 const navigate = jest.fn();
 
@@ -15,7 +12,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 test('CalenderPage', async () => {
-  render(<CalenderPage />);
+  render(<MyPage />);
 
   await waitFor(() => {
     screen.getByText('Pt시간표');
