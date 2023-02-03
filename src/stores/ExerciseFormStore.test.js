@@ -1,7 +1,5 @@
 const { default: ExerciseFormStore } = require('./ExerciseFormStore');
 
-const context = describe;
-
 describe('exerciseFormStore', () => {
   let exerciseFormStore;
 
@@ -19,9 +17,11 @@ describe('exerciseFormStore', () => {
 
   describe('deleteExerciseInformation', () => {
     it('deleteExerciseInformation', () => {
-      exerciseFormStore.deleteExerciseInformation(2);
+      exerciseFormStore.addExerciseForm({ id: 1 });
 
-      exerciseFormStore.addExerciseForm();
+      exerciseFormStore.deleteExerciseInformation(1);
+
+      console.log(exerciseFormStore.setForms);
 
       expect(exerciseFormStore.setForms[0].weight).toEqual(0);
     });
@@ -29,30 +29,32 @@ describe('exerciseFormStore', () => {
 
   describe('addExerciseForm', () => {
     it('addExerciseForm', () => {
+      expect(exerciseFormStore.setForms.length).toEqual(0);
+
+      exerciseFormStore.addExerciseForm({ id: 1 });
+
       expect(exerciseFormStore.setForms.length).toEqual(1);
-
-      exerciseFormStore.addExerciseForm();
-
-      expect(exerciseFormStore.setForms.length).toEqual(2);
     });
   });
 
   describe('deleteExerciseForm', () => {
     it('deleteExerciseForm', () => {
+      expect(exerciseFormStore.setForms.length).toEqual(0);
+
+      exerciseFormStore.addExerciseForm({ id: 1 });
+
       expect(exerciseFormStore.setForms.length).toEqual(1);
-
-      exerciseFormStore.addExerciseForm();
-
-      expect(exerciseFormStore.setForms.length).toEqual(2);
 
       exerciseFormStore.deleteExerciseForm();
 
-      expect(exerciseFormStore.setForms.length).toEqual(1);
+      expect(exerciseFormStore.setForms.length).toEqual(0);
     });
   });
 
   describe('changeReps', () => {
     it('changeReps', () => {
+      exerciseFormStore.addExerciseForm({ id: 1 });
+
       exerciseFormStore.changeReps({ target: { value: 10 } }, 1);
 
       expect(exerciseFormStore.setForms[0].reps).toEqual(10);
@@ -61,6 +63,8 @@ describe('exerciseFormStore', () => {
 
   describe('changeWeight', () => {
     it('changeWeight', () => {
+      exerciseFormStore.addExerciseForm({ id: 1 });
+
       exerciseFormStore.changeWeight({ target: { value: 90 } }, 1);
 
       expect(exerciseFormStore.setForms[0].weight).toEqual(90);
@@ -79,7 +83,7 @@ describe('exerciseFormStore', () => {
     it('resetSetForms', () => {
       exerciseFormStore.resetSetForms();
 
-      expect(exerciseFormStore.setForms[0].weight).toEqual(0);
+      expect(exerciseFormStore.setForms).toEqual([]);
     });
   });
 });

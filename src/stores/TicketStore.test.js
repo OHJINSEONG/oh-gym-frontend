@@ -9,35 +9,67 @@ describe('ticketStore', () => {
     ticketStore = new TicketStore();
   });
 
-  describe('fetchTickets', () => {
-    it('fetchTickets', async () => {
-      await ticketStore.fetchTickets();
-
-      expect(ticketStore.tickets.length).toEqual(2);
-    });
-  });
-
-  describe('findTicket', () => {
-    it('findTicket', async () => {
-      await ticketStore.findTicket(1);
-
-      expect(ticketStore.ticket.ptTimes).toEqual(12);
-    });
-  });
-
   describe('findLockerTicket', () => {
     it('findLockerTicket', async () => {
-      await ticketStore.findLockerTicket(1);
+      await ticketStore.findLockerTicket();
 
-      expect(ticketStore.lockerTicket.ptTimes).toEqual(12);
+      expect(ticketStore.lockerInformation.periodOfUse).toEqual(30);
     });
   });
 
-  describe('fetchLockerTicket', () => {
-    it('fetchLockerTicket', async () => {
-      await ticketStore.fetchLockerTicket(1, '2022-12-25');
+  describe('lockerTicketUnUse', () => {
+    it('lockerTicketUnUse', async () => {
+      await ticketStore.lockerTicketUnUse(1);
 
-      expect(ticketStore.lockerTicket.startDate).toEqual('2022-12-25');
+      expect(ticketStore.lockerInformation.status).toEqual('UNUSED');
+    });
+  });
+
+  describe('fetchPtTickets', () => {
+    it('fetchPtTickets', async () => {
+      await ticketStore.fetchPtTickets();
+
+      expect(ticketStore.ptTickets.length).toEqual(2);
+    });
+  });
+
+  describe('fetchMembershipTickets', () => {
+    it('fetchMembershipTickets', async () => {
+      await ticketStore.fetchMembershipTickets();
+
+      expect(ticketStore.membershipTickets.length).toEqual(2);
+    });
+  });
+
+  describe('updatePtTicketUse', () => {
+    it('updatePtTicketUse', async () => {
+      await ticketStore.updatePtTicketUse(1, '2023-01-02');
+
+      expect(ticketStore.inUsePtTicket.status).toEqual('INUSED');
+    });
+  });
+
+  describe('updateMembershipUse', () => {
+    it('updateMembershipUse', async () => {
+      await ticketStore.updateMembershipUse(1, '2023-01-02');
+
+      expect(ticketStore.inUseMembershipTicket.status).toEqual('INUSED');
+    });
+  });
+
+  describe('findInUseMembershipTicket', () => {
+    it('findInUseMembershipTicket', async () => {
+      await ticketStore.findInUseMembershipTicket();
+
+      expect(ticketStore.inUseMembershipTicket.status).toEqual('INUSED');
+    });
+  });
+
+  describe('findInUsePtTicket', () => {
+    it('findInUsePtTicket', async () => {
+      await ticketStore.findInUsePtTicket();
+
+      expect(ticketStore.inUsePtTicket.periodOfUse).toEqual(30);
     });
   });
 });

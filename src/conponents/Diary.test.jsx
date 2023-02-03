@@ -5,17 +5,26 @@ const navigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
   useNavigate: () => navigate,
-  useParams: () => ({
-    exerciseId: 1,
-  }),
 }));
 
-test('addPlanPage', async () => {
-  const date = '2022-12-25';
+describe('Diary', () => {
+  it('no diary', async () => {
+    const date = '2022-12-25';
 
-  render(<Diary date={date} />);
+    render(<Diary date={date} />);
 
-  await waitFor(() => {
-    screen.getByText('2022-12-25운동일지');
+    await waitFor(() => {
+      screen.getByText('12.25 운동');
+    });
+  });
+
+  it('with diary', async () => {
+    const date = '2023-01-02';
+
+    render(<Diary date={date} />);
+
+    await waitFor(() => {
+      screen.getByText('해당 날짜에 운동일지가 없습니다.');
+    });
   });
 });

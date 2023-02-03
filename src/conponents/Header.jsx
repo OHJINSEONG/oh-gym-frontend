@@ -1,18 +1,17 @@
-import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useLocalStorage } from 'usehooks-ts';
-import useUserStore from '../hooks/useUserStore';
 
 const Container = styled.div`
   position: fixed;
   font-size: .8em;
   font-weight: bold;
+  top:0%;
   width: 100%;
-  height: 30px;
+  height: 70px;
   background-color: white;
-
   justify-content: space-between;
+  z-index: 900;
+  border-bottom: 1px solid #D1D1D1;
 
   ul{
       display: flex;
@@ -24,9 +23,7 @@ const Container = styled.div`
       display: flex;
       justify-content:center;
       align-items: center;
-      margin: 10px;
-      padding: 10px;
-      border: 1px solid black;
+      margin: 15px;
     }
   }
   
@@ -43,6 +40,17 @@ const Wrapper = styled.nav`
   align-items: center;
   width: 100%;
   height: 100%;
+  
+
+  .myPage{
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
+  }
+
+  button{
+    color: #EF781A;
+  }
 `;
 
 export default function Header() {
@@ -51,16 +59,33 @@ export default function Header() {
 
   const path = location.pathname;
 
+  if (path.includes('diarys/') || path.includes('exercises/') || path.includes('order/') || path.includes('chats/')) {
+    return (
+      <Container>
+        <Wrapper>
+          <ul>
+            <li>
+              <button type="button" onClick={() => navigator(-1)}>이전</button>
+            </li>
+            <li>
+              <img src="/assets/images/alarm.png" />
+            </li>
+          </ul>
+        </Wrapper>
+      </Container>
+    );
+  }
+
   if (path.includes('myPage/')) {
     return (
       <Container>
         <Wrapper>
           <ul>
             <li>
-              <button type="button" onClick={() => navigator('/myPage')}>MyPage</button>
+              <button type="button" className="myPage" onClick={() => navigator('/myPage')}>MyPage</button>
             </li>
             <li>
-              <button type="button">뭐할까</button>
+              <img src="/assets/images/alarm.png" />
             </li>
           </ul>
         </Wrapper>
@@ -73,11 +98,31 @@ export default function Header() {
       <Wrapper>
         <ul>
           <li>
-            <Link to="/">설정</Link>
+            <Link to="/">
+              <img
+                alt="title"
+                src="/assets/images/title.png"
+              />
+            </Link>
           </li>
-          <li>
-            <Link to="/products">알림</Link>
-          </li>
+          <div>
+            <li>
+              <Link to="/products">
+                <img
+                  alt="alarm"
+                  src="/assets/images/alarm.png"
+                />
+              </Link>
+            </li>
+            <li>
+              <Link to="/products">
+                <img
+                  alt="setting"
+                  src="/assets/images/setting.png"
+                />
+              </Link>
+            </li>
+          </div>
         </ul>
       </Wrapper>
     </Container>

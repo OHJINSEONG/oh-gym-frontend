@@ -10,6 +10,23 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 500px;
+
+  @keyframes spinCircle {
+    from {
+        transform:translate(-50%, -50%) rotate(0);
+    }
+    to {
+        transform:translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+  .loadingBox .dim {position:fixed; left:0; top:0; width:100%; height:100%; background:white;}
+  .loadingBox .circle {position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); width:40px; height:40px; border:10px solid #EF781A; border-top:10px solid white; border-radius:50em;
+    animation-name:spinCircle;
+    animation-duration:.8s;
+    animation-iteration-count:infinite;}
+ 
+  
 `;
 
 const code = new URL(window.location.href).searchParams.get('code');
@@ -32,7 +49,7 @@ export default function Kakao() {
     if (accessToken) {
       setAccessToken(accessToken);
 
-      navigate('/');
+      navigate('/myPage');
 
       return;
     }
@@ -46,7 +63,10 @@ export default function Kakao() {
 
   return (
     <Container>
-      로그인 중이 다리다리다리다리 다금바리
+      <div className="loadingBox">
+        <div className="dim" />
+        <div className="circle" />
+      </div>
     </Container>
   );
 }

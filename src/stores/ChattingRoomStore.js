@@ -5,15 +5,6 @@ export default class ChattingRoomStore extends Store {
   constructor() {
     super();
     this.chattingRoom = {};
-    this.chattingRooms = [];
-  }
-
-  async fetchMyChattingRooms() {
-    const chattingRooms = await apiService.fetchMyChattingRooms();
-
-    this.chattingRooms = chattingRooms;
-
-    this.publish();
   }
 
   async create(trainerId) {

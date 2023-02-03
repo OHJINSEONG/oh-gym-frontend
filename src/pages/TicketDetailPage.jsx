@@ -25,7 +25,7 @@ export default function TicketDetailPage() {
 
   return (
     <Container>
-      <p>{ticket.ptTimes}</p>
+      <p>{ticket?.ptTimes}</p>
     </Container>
   );
 }

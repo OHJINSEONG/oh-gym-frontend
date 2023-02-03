@@ -6,7 +6,6 @@ export default class DiaryStore extends Store {
     super();
     this.diarys = [];
     this.diary = {};
-    this.diaryById = {};
   }
 
   async fetchDiarys() {
@@ -25,8 +24,16 @@ export default class DiaryStore extends Store {
     this.publish();
   }
 
-  async findDiaryById(diaryId) {
-    const diary = await apiService.findDiaryById(diaryId);
+  async findById(diaryId) {
+    const diary = await apiService.findByIdDiary(diaryId);
+
+    this.diary = diary;
+
+    this.publish();
+  }
+
+  async complete(diaryId, registerData) {
+    const diary = await apiService.completeDiary(diaryId, registerData);
 
     this.diary = diary;
 
@@ -36,9 +43,17 @@ export default class DiaryStore extends Store {
   async create(date) {
     const diary = await apiService.createDiary(date);
 
+    this.diary = diary;
+
     this.publish();
 
     return diary;
+  }
+
+  async delete(diaryId) {
+    await apiService.deleteDiary(diaryId);
+
+    this.publish();
   }
 }
 

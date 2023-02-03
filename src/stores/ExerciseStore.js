@@ -4,21 +4,15 @@ import Store from './Store';
 export default class ExerciseStore extends Store {
   constructor() {
     super();
-    this.exercisePlans = [];
     this.exercise = {};
+    this.exerciseName = '';
     this.sets = [];
-  }
-
-  async fetchExercises(diaryId) {
-    const exercisePlans = await apiService.fetchExercises(diaryId);
-
-    this.exercisePlans = exercisePlans;
-
-    this.publish();
   }
 
   async find(exerciseId) {
     const exercise = await apiService.findExercise(exerciseId);
+
+    this.exerciseName = exercise.exercise.name;
 
     this.exercise = exercise;
 
@@ -30,15 +24,23 @@ export default class ExerciseStore extends Store {
   async create(exerciseInformation) {
     const exercise = await apiService.createExercise(exerciseInformation);
 
+    this.exercise = exercise;
+
     this.publish();
 
     return exercise;
   }
 
-  async createSets(setImformation) {
-    const sets = await apiService.createSets(setImformation);
+  async complete(exerciseId) {
+    const exercise = await apiService.completeExercise(exerciseId);
 
-    this.sets = sets;
+    this.exercise = exercise;
+
+    this.publish();
+  }
+
+  async delete(exerciseId) {
+    await apiService.deleteExercise(exerciseId);
 
     this.publish();
   }

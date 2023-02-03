@@ -11,7 +11,7 @@ describe('orderStore', () => {
 
   describe('fetchOrders', () => {
     it('fetchOrders', async () => {
-      await orderStore.fetchOrders(1);
+      await orderStore.fetchOrders();
 
       expect(orderStore.orders.length).toEqual(1);
     });
@@ -19,11 +19,11 @@ describe('orderStore', () => {
 
   describe('create', () => {
     it('create', async () => {
-      await orderStore.create({
-        userId: 1, productId: 1, option: [],
+      const kakaoUrl = await orderStore.create({
+        productId: 1,
       });
 
-      expect(orderStore.order.productId).toEqual(1);
+      expect(kakaoUrl).toEqual('카카오');
     });
   });
 
@@ -32,6 +32,15 @@ describe('orderStore', () => {
       await orderStore.findOrder(1);
 
       expect(orderStore.order.productId).toEqual(1);
+    });
+  });
+
+  describe('fetchPayResult', () => {
+    it('fetchPayResult', async () => {
+      await orderStore.fetchPayResult('토큰');
+
+      expect(orderStore.paymentResult.item_name).toEqual('PT');
+      expect(orderStore.paymentResult.amount.total).toEqual(100000);
     });
   });
 });

@@ -12,5 +12,5 @@ test('App', () => {
       </MemoryRouter>
     </div>));
 
-  screen.getByText(/Hello/);
+  screen.getByText(/Home/);
 });

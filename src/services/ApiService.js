@@ -16,17 +16,11 @@ export default class ApiService {
   async fetchProducts() {
     const { data } = await axios.get(`${baseUrl}/products`);
 
-    return data.productDtos;
+    return data;
   }
 
   async findProduct(productId) {
     const { data } = await axios.get(`${baseUrl}/products/${productId}`);
-
-    return data;
-  }
-
-  async fetchExercises(diaryId) {
-    const { data } = await axios.get(`${baseUrl}/exercises?diaryId=${diaryId}`);
 
     return data;
   }
@@ -69,8 +63,16 @@ export default class ApiService {
     return data;
   }
 
-  async fetchTrainerSchedules(trainerId, date) {
+  async fetchTrainerDailySchedule(trainerId, date) {
     const { data } = await axios.get(`${baseUrl}/schedules?trainerId=${trainerId}&date=${date}`);
+
+    return data;
+  }
+
+  async fetchTrainerSchedules(trainerId) {
+    const { data } = await axios.get(`${baseUrl}/schedules/list?trainerId=${trainerId}`);
+
+    console.log(data);
 
     return data;
   }
@@ -89,6 +91,16 @@ export default class ApiService {
 
   async fetchDateLectures(date) {
     const { data } = await axios.get(`${baseUrl}/lectures?date=${date}`);
+
+    return data;
+  }
+
+  async lectureCancel(lectureId) {
+    const { data } = await axios.delete(`${baseUrl}/lectures/${lectureId}`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
 
     return data;
   }
@@ -116,7 +128,7 @@ export default class ApiService {
   }
 
   async fetchDiarys() {
-    const { data } = await axios.get(`${baseUrl}/diarys`, {
+    const { data } = await axios.get(`${baseUrl}/diarys/list`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
@@ -137,8 +149,16 @@ export default class ApiService {
     return data;
   }
 
-  async findDiaryById(diaryId) {
+  async findByIdDiary(diaryId) {
     const { data } = await axios.get(`${baseUrl}/diarys/${diaryId}`);
+
+    console.log(data);
+
+    return data;
+  }
+
+  async completeDiary(diaryId, registerData) {
+    const { data } = await axios.patch(`${baseUrl}/diarys/${diaryId}`, registerData);
 
     return data;
   }
@@ -154,12 +174,24 @@ export default class ApiService {
     return data;
   }
 
+  async deleteDiary(diaryId) {
+    await axios.delete(`${baseUrl}/diarys/${diaryId}`);
+  }
+
   async findLockerTicket() {
     const { data } = await axios.get(`${baseUrl}/locker-tickets`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
+
+    console.log(data);
+
+    return data;
+  }
+
+  async lockerTicketUnUse(lockerTicketId) {
+    const { data } = await axios.patch(`${baseUrl}/locker-tickets/${lockerTicketId}/cancel`);
 
     console.log(data);
 
@@ -173,11 +205,25 @@ export default class ApiService {
   }
 
   async fetchLocker(lockerId) {
-    const { data } = await axios.patch(`${baseUrl}/lockers/${lockerId}`, {
+    const { data } = await axios.patch(`${baseUrl}/lockers/${lockerId}`, { type: 'reserve' }, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
+
+    console.log(data);
+
+    return data;
+  }
+
+  async lockerCancel(lockerId) {
+    const { data } = await axios.patch(`${baseUrl}/lockers/${lockerId}`, { type: 'cancel' }, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    console.log(data);
 
     return data;
   }
@@ -188,7 +234,7 @@ export default class ApiService {
     return data;
   }
 
-  async fetchTickets() {
+  async fetchPtTickets() {
     const { data } = await axios.get(`${baseUrl}/pt-tickets`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
@@ -198,8 +244,24 @@ export default class ApiService {
     return data;
   }
 
-  async findTicket(ticketId) {
-    const { data } = await axios.get(`${baseUrl}/pt-tickets/${ticketId}`);
+  async updatePtTicketUse(ticketId, startDate) {
+    const { data } = await axios.patch(`${baseUrl}/pt-tickets/${ticketId}?date=${startDate}`);
+
+    return data;
+  }
+
+  async fetchMembershipTickets() {
+    const { data } = await axios.get(`${baseUrl}/membership-tickets`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    return data;
+  }
+
+  async updateMembershipUse(ticketId, startDate) {
+    const { data } = await axios.patch(`${baseUrl}/membership-tickets/${ticketId}?date=${startDate}`);
 
     return data;
   }
@@ -215,8 +277,6 @@ export default class ApiService {
   }
 
   async createUser(kakaoAccessToken) {
-    console.log(kakaoAccessToken);
-
     const { data } = await axios.post(`${baseUrl}/users`, { kakaoAccessToken });
 
     return data;
@@ -281,8 +341,46 @@ export default class ApiService {
     await axios.delete(`${baseUrl}/sets/${setId}`);
   }
 
-  async fetchSetData(inputData) {
+  async patchSetData(inputData) {
     const { data } = await axios.patch(`${baseUrl}/sets`, inputData);
+
+    return data;
+  }
+
+  async completeSet(setId) {
+    const { data } = await axios.patch(`${baseUrl}/sets/${setId}`);
+
+    return data;
+  }
+
+  async completeExercise(exerciseId) {
+    const { data } = await axios.patch(`${baseUrl}/exercises/${exerciseId}`);
+
+    return data;
+  }
+
+  async deleteExercise(exerciseId) {
+    const { data } = await axios.delete(`${baseUrl}/exercises/${exerciseId}`);
+
+    return data;
+  }
+
+  async findInUsePtTicket() {
+    const { data } = await axios.get(`${baseUrl}/pt-tickets/use`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    return data;
+  }
+
+  async findInUseMembershipTicket() {
+    const { data } = await axios.get(`${baseUrl}/membership-tickets/use`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
 
     return data;
   }

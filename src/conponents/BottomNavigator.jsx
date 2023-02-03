@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Link, useLocation,
+} from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -9,25 +10,51 @@ const Container = styled.div`
   font-weight: bold;
   bottom:0%;
   width: 100%;
-  height: 7em;
-  background-color: white;
-  border-top: solid 1px black;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 900;
+`;
 
+const NavigatorWrapper = styled.nav`
+  display: flex;
   justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #EF781A;
 
   ul{
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      height: 100%;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
       
     li{
-      display: flex;
+      display: flex;  
       width: 100%;
       height: 100%;
       justify-content: center;
       align-items: center;
-      border: 1px solid black;
+    }
+
+    a{
+      display: flex;  
+      width: 100%;
+      height: 60%;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: 'Spoqa Han Sans Neo';
+      font-style: normal;
+      font-weight: 400;
+      border-right: 1px solid #FFFFFF; 
+    }
+
+    .noborder{
+      border: none;
     }
   }
   
@@ -38,23 +65,28 @@ const Container = styled.div`
   }
 `;
 
-const Wrapper = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-`;
-
 export default function BottomNavigator() {
   const [accessToken] = useLocalStorage('accessToken', '');
+
   const location = useLocation();
 
   const path = location.pathname;
 
-  useEffect(() => {
-    console.log(location.pathname);
-  }, []);
+  if (path.includes('/order/')) {
+    return (null);
+  }
+
+  if (path.includes('calendar')) {
+    return (null);
+  }
+
+  if (path.includes('exercise')) {
+    return (null);
+  }
+
+  if (path.includes('diary')) {
+    return (null);
+  }
 
   if (path.includes('myPage/')) {
     return (null);
@@ -62,7 +94,7 @@ export default function BottomNavigator() {
 
   return (
     <Container>
-      <Wrapper>
+      <NavigatorWrapper>
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -76,16 +108,16 @@ export default function BottomNavigator() {
           {accessToken
             ? (
               <li>
-                <Link to="/myPage">MyPage</Link>
+                <Link className="noborder" to="/myPage">MyPage</Link>
               </li>
             )
             : (
               <li>
-                <Link to="/login">Login</Link>
+                <Link className="noborder" to="/login">Login</Link>
               </li>
             ) }
         </ul>
-      </Wrapper>
+      </NavigatorWrapper>
     </Container>
   );
 }

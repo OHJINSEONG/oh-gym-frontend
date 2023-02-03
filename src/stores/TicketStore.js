@@ -5,8 +5,11 @@ export default class TicketStore extends Store {
   constructor() {
     super();
     this.lockerInformation = {};
-    this.tickets = [];
-    this.ticket = {};
+    this.ptTickets = [];
+    this.ptTicket = {};
+    this.membershipTickets = [];
+    this.inUseMembershipTicket = {};
+    this.inUsePtTicket = {};
   }
 
   async findLockerTicket() {
@@ -17,28 +20,58 @@ export default class TicketStore extends Store {
     this.publish();
   }
 
-  async fetchLockerTicket(lockerTicketId, startDate) {
-    const lockerTicket = await apiService.fetchLockerTicket(lockerTicketId, startDate);
+  async lockerTicketUnUse(lockerTicketId) {
+    const lockerInformation = await apiService.lockerTicketUnUse(lockerTicketId);
 
-    console.log(startDate);
-
-    this.lockerTicket = lockerTicket;
+    this.lockerInformation = lockerInformation;
 
     this.publish();
   }
 
-  async fetchTickets() {
-    const tickets = await apiService.fetchTickets();
+  async fetchPtTickets() {
+    const ptTickets = await apiService.fetchPtTickets();
 
-    this.tickets = tickets;
+    this.ptTickets = ptTickets;
 
     this.publish();
   }
 
-  async findTicket(ticketId) {
-    const ticket = await apiService.findTicket(ticketId);
+  async fetchMembershipTickets() {
+    const membershipTickets = await apiService.fetchMembershipTickets();
 
-    this.ticket = ticket;
+    this.membershipTickets = membershipTickets;
+
+    this.publish();
+  }
+
+  async updatePtTicketUse(ticketId, startDate) {
+    const inUsePtTicket = await apiService.updatePtTicketUse(ticketId, startDate);
+
+    this.inUsePtTicket = inUsePtTicket;
+
+    this.publish();
+  }
+
+  async updateMembershipUse(ticketId, startDate) {
+    const inUseMembershipTicket = await apiService.updateMembershipUse(ticketId, startDate);
+
+    this.inUseMembershipTicket = inUseMembershipTicket;
+
+    this.publish();
+  }
+
+  async findInUseMembershipTicket() {
+    const inUseMembershipTicket = await apiService.findInUseMembershipTicket();
+
+    this.inUseMembershipTicket = inUseMembershipTicket;
+
+    this.publish();
+  }
+
+  async findInUsePtTicket() {
+    const inUsePtTicket = await apiService.findInUsePtTicket();
+
+    this.inUsePtTicket = inUsePtTicket;
 
     this.publish();
   }

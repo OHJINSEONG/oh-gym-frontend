@@ -31,6 +31,7 @@ export default function ChattingPage() {
 
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
+  const [chattingParticipants, setChatParticipants] = useState({});
 
   const stompClient = useRef({});
 
@@ -70,10 +71,24 @@ export default function ChattingPage() {
         }]);
       });
 
+      stompClient.current.subscribe('/sub/user/chat', (chat) => {
+        const {
+          userName, trainerName, trainerImage,
+        } = JSON.parse(chat.body);
+
+        setChatParticipants({ userName, trainerName, trainerImage });
+      });
+
       stompClient.current.send(
         '/pub/chat/messages',
         { Authorization: `Bearer ${accessToken}` },
-        JSON.stringify({ roomId, writer: user.userName }),
+        JSON.stringify({ roomId }),
+      );
+
+      stompClient.current.send(
+        '/pub/user/chat/enter',
+        { Authorization: `Bearer ${accessToken}` },
+        JSON.stringify({ roomId }),
       );
     });
 
@@ -116,6 +131,7 @@ export default function ChattingPage() {
       messageChange={messageChange}
       chatMessages={chatMessages}
       publishMessage={publishMessage}
+      chattingParticipants={chattingParticipants}
     />
   );
 }

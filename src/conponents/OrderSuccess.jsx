@@ -2,17 +2,65 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useOrderStore from '../hooks/useOrderStore';
+import { dateFormatter } from '../utils/DateFormatter';
+import { PaddingTop } from './ui/Padding';
 
 const Container = styled.div`
 display: flex;
 flex-direction: column;
-justify-content: center;
+justify-content: flex-start;
 align-items: center;
-padding-top: 100px;
+height: 774px;
+padding-top: 80px;
+background-color: white;
+
+h2{
+  font-size: 33px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  color:#EF781A
+}
+
+h1{
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
 
 div{
   display: flex;
 }
+
+button {
+  width: 250px;
+  height: 70px;
+  border-radius: 20px;
+  font-size: 18px;
+  color:white;
+  background-color: #EF781A;
+}
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border: 1px solid #EF781A;
+  padding: 20px;
+  margin-bottom: 50px;
+
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    height:30px
+  }
+
+  h3{
+   margin-right: 5px;
+  }
 `;
 
 export default function OrderSuccess() {
@@ -28,10 +76,11 @@ export default function OrderSuccess() {
 
   useEffect(() => {
     orderStore.fetchPayResult(pgToken);
+    console.log(paymentResult);
   }, []);
 
   const handleClickHome = () => {
-    navigate('/');
+    navigate('/myPage/tickets');
   };
 
   if (!paymentResult.amount) {
@@ -39,35 +88,40 @@ export default function OrderSuccess() {
   }
 
   return (
-    <Container>
-      <p>카카오페이 결제가 정상적으로 완료되었습니다</p>
-      <div>
-        <p>결제일시:</p>
-        <p>{paymentResult.approved_at}</p>
-      </div>
-      <div>
-        <p>주문번호:</p>
-        <p>{paymentResult.partner_order_id}</p>
-      </div>
-      <div>
-        <p>상품명:</p>
-        <p>{paymentResult.item_name}</p>
-      </div>
-      <div>
-        <p>결제금액:</p>
-        <p>
-          {paymentResult.amount.total}
-          원
-        </p>
-      </div>
-      <div>
-        <button
-          type="button"
-          onClick={handleClickHome}
-        >
-          홈으로
-        </button>
-      </div>
-    </Container>
+    <PaddingTop>
+      <Container>
+        <h2>OH GYM</h2>
+        <h1>결제가 정상적으로 완료되었습니다</h1>
+        <Wrapper>
+          <div>
+            <h3>-구매처:</h3>
+            <p>{paymentResult.partner_user_id}</p>
+          </div>
+          <div>
+            <h3>-상품명:</h3>
+            <p>{paymentResult.item_name}</p>
+          </div>
+          <div>
+            <h3>-결제일시:</h3>
+            <p>{dateFormatter.localDateTime(new Date(paymentResult.approved_at))}</p>
+          </div>
+          <div>
+            <h3>-결제금액:</h3>
+            <p>
+              {paymentResult.amount.total}
+              원
+            </p>
+          </div>
+        </Wrapper>
+        <div>
+          <button
+            type="button"
+            onClick={handleClickHome}
+          >
+            이용권 보러가기
+          </button>
+        </div>
+      </Container>
+    </PaddingTop>
   );
 }

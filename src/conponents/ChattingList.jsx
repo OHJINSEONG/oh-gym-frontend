@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { dateFormatter } from '../utils/DateFormatter';
+import { PaddingTop } from './ui/Padding';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  height: 830px;
+  width: 100%;
+  background-color: white;
+  min-height: 774px;
 
   h1{
     font-size: 2em;
@@ -21,6 +24,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
   height: 100%;
 `;
 
@@ -29,32 +33,35 @@ const MenuWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 30px 0px;
+  width: 100%;
+
+  .chattingList{
+    background-color: #EF781A;
+    color: white;
+    box-shadow: 0px 3px 3px 3px gray;
+  }
   
   button{
-    width: 130px;
-    height: 40px;
-    border: 1px solid black;
+    width: 50%;
+    height: 50px;
+    font-size: 17px;
+    font-weight: bold;
   }
 `;
 
 const ChattingBox = styled.div`
-  border: 1px solid black;
-  margin-bottom: 50px;
-  border-radius: 20px;
-  height: 500px;
-  width: 300px;
+  height: 100%;
+  width: 100%;
+  margin-top: 8px;
   overflow-y: auto;
 `;
 
 const ChattingRoomList = styled.ul`
   display: flex;
   flex-direction: column;
-  padding-top: 10px;
-  padding-left: 11px;
-  padding-right: 17px;
   background-color: white;
   width: 100%;  
+  height: 100%;
 `;
 
 const ChattingRoom = styled.li`
@@ -66,28 +73,56 @@ const ChattingRoom = styled.li`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    height: 100px;
     width: 100%;
-    border: 1px solid black;  
     font-size: 0.2px;
+  }
+
+  img{
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+    box-shadow: 0px 2px 6px 0px gray;
   }
 `;
 
 const ChattingRoomMessage = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px;
+  width: 81%;
+  height: 65%;
+`;
+
+const ChattingOpponentInformation = styled.div`
+  display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
-  padding: 7px;
-  width: 80%;
+  width: 70%;
   height: 100%;
+   
+  p {
+    font-size: 15px;
+    text-align: start;
+    word-break: break-all;
+  }
+`;
+
+const OpponentName = styled.div`
+  display: flex;
+  align-items: flex-end;
 
   h2{
     font-weight: bold;
-    font-size: 12px;
+    font-size: 17px;
+    margin-right: 3px;
   }
 
   p {
+    font-size: 16px;
+    font-weight: 700;
     text-align: start;
     word-break: break-all;
   }
@@ -100,12 +135,10 @@ const ChattingRoomTime = styled.div`
   height: 100%;
   justify-content: flex-start;
   align-items: center;
+  padding-top: 9px;
 
   h2{
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 30px;
+    height: 16px;
     font-size: 12px;
   }
 
@@ -114,10 +147,10 @@ const ChattingRoomTime = styled.div`
     justify-content: center;
     align-items: center;
     margin-left: 10px;
-    width: 20px;
-    height: 20px;
+    font-size: 12px;
+    padding: 6px 9px;
     border-radius: 50%;
-    background-color: red;
+    background-color: #EF781A;
     color : white
   }
 `;
@@ -126,14 +159,13 @@ export default function ChattingList({ chattingRooms }) {
   const navigator = useNavigate();
 
   return (
-    <Container>
-      <Wrapper>
-        <h1>상담톡</h1>
-        <MenuWrapper>
-          <button type="button">최근 톡</button>
-          <button type="button" onClick={() => navigator('/myPage/chats')}>상담 목록</button>
-        </MenuWrapper>
-        <div>
+    <PaddingTop>
+      <Container>
+        <Wrapper>
+          <MenuWrapper>
+            <button type="button" className="chatting">최근 톡</button>
+            <button type="button" className="chattingList" onClick={() => navigator('/myPage/chats')}>상담 목록</button>
+          </MenuWrapper>
           <ChattingBox>
             <ChattingRoomList>
               {chattingRooms.length ? chattingRooms
@@ -141,19 +173,26 @@ export default function ChattingList({ chattingRooms }) {
                   ? (
                     <ChattingRoom key={chattingRoom.chattingRoom.id}>
                       <button type="button" onClick={() => navigator(`${chattingRoom.chattingRoom.id}`)}>
+                        <img src={chattingRoom.chattingRoom.trainerImage} />
                         <ChattingRoomMessage>
-                          <h2>
-                            {chattingRoom.chattingRoom.trainerName}
-                            님
-                          </h2>
-                          <p>{chattingRoom.chattingRoom.message.substring(0, 60)}</p>
+                          <ChattingOpponentInformation>
+                            <OpponentName>
+                              <h2>
+                                {chattingRoom.chattingRoom.trainerName}
+                              </h2>
+                              <p>
+                                트레이너
+                              </p>
+                            </OpponentName>
+                            <p>{chattingRoom.chattingRoom.message.substring(0, 30)}</p>
+                          </ChattingOpponentInformation>
+                          <ChattingRoomTime>
+                            <h2>{dateFormatter.localTime(chattingRoom.chattingRoom.updateTime)}</h2>
+                            {chattingRoom.count
+                              ? <p>{chattingRoom.count}</p>
+                              : null}
+                          </ChattingRoomTime>
                         </ChattingRoomMessage>
-                        <ChattingRoomTime>
-                          <h2>{dateFormatter.localTime(chattingRoom.chattingRoom.updateTime)}</h2>
-                          {chattingRoom.count
-                            ? <p>{chattingRoom.count}</p>
-                            : null}
-                        </ChattingRoomTime>
                       </button>
                     </ChattingRoom>
                   )
@@ -161,8 +200,8 @@ export default function ChattingList({ chattingRooms }) {
                 : <p>채팅상대가 없습니다.</p>}
             </ChattingRoomList>
           </ChattingBox>
-        </div>
-      </Wrapper>
-    </Container>
+        </Wrapper>
+      </Container>
+    </PaddingTop>
   );
 }

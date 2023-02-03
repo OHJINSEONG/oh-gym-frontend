@@ -11,6 +11,8 @@ export default class ExerciseSetStore extends Store {
   async createSet(exerciseId) {
     const set = await apiService.createSets(exerciseId);
 
+    this.set = set;
+
     this.publish();
 
     return set;
@@ -22,8 +24,8 @@ export default class ExerciseSetStore extends Store {
     this.publish();
   }
 
-  async fetchData(inputData) {
-    const sets = await apiService.fetchSetData(inputData);
+  async patchData(inputData) {
+    const sets = await apiService.patchSetData(inputData);
 
     this.sets = sets;
 

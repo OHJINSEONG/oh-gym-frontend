@@ -7,6 +7,9 @@ const GlobalStyle = createGlobalStyle`
     list-style-type: none;
     text-decoration: none;
   }
+  body{
+    background-color: #D1D1D1;
+  }
   button {
     border : none;
     background-color: transparent;

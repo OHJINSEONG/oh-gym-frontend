@@ -1,96 +1,147 @@
 /* eslint-disable no-unused-expressions */
+import { useEffect } from 'react';
 import { useState } from 'react';
 
 import styled from 'styled-components';
 import useLectureStore from '../hooks/useLectureStore';
 
 import useMassageStore from '../hooks/useMessageStore';
+import useUserStore from '../hooks/useUserStore';
+import { dateFormatter } from '../utils/DateFormatter';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 20px;
-  width: 80%;
-  height: 200px;
-  border: 1px solid black;
+  width: 100%;
+  margin-top: 10px;
+`;
 
-h1{
-  margin-bottom: 10px;
-}
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 140px;
+  border: 1px solid #D1D1D1;
+  border-radius: 20px;
+  box-shadow: 0px 6px 6px 3px gray;
+
+  h1{
+   margin-bottom: 10px;
+  }
 `;
 
 const Schedules = styled.ul`
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 10px;
+  width: 300px;
+  height: 70px;
+  overflow-x: auto;
 
   button {
-  width: 80px;
-  height: 30px;
-  border-radius: 15px;
-  margin-top: 5px;
-  border : 1px solid black
+    width: 90px;
+    height: 40px;
+    border-radius: 20px;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0px 3px 3px 0px gray;
+  }
+
+  .hover{
+    color:white;
+    background-color: #EF781A;
   }
 `;
 
 const Button = styled.button`
-  margin-top: 30px;
-  width: 150px;
+  margin-top: 5px;
+  width: 300px;
   height: 40px;
-  border : 1px solid black
+  border-radius: 20px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border : 1px solid #D1D1D1;
+  background-color: #EF781A;
 `;
 
-export default function ChangeLecture({ todayDate }) {
+export default function ChangeLecture({
+  value, ptTime, setPtTime, trainerId,
+}) {
   const messageStore = useMassageStore();
   const lectureStore = useLectureStore();
+  const userStore = useUserStore();
 
-  const [ptTime, setPtTime] = useState('');
+  const todayDate = dateFormatter.localDate(value);
 
   const date = `${todayDate}T${ptTime}`;
 
   const { dailyEmptySchedule } = lectureStore;
 
-  const handleClickSchedule = (schedule) => {
+  const handleClickSchedule = async (schedule) => {
     schedule.length === 4
       ? setPtTime(`0${schedule}`)
       : setPtTime(schedule);
   };
 
-  console.log(dailyEmptySchedule);
-
   const handleClickAdd = () => {
     console.log(date);
     messageStore.sendRequest({
-      receiverId: 1,
+      receiverId: trainerId,
       type: 'requestPt',
       context: date,
-      senderName: '오진욱',
+      senderName: userStore.user?.userName,
     });
+
+    setPtTime('');
   };
+
+  useEffect(() => {
+    console.log(lectureStore.schedules);
+  }, [ptTime]);
+
+  if (value < new Date()) {
+    return (null);
+  }
 
   return (
     <Container>
-      <div>
-        {dailyEmptySchedule.length
-          ? (
-            <div>
-              <h1>PT 예약 가능한 시간</h1>
-              <Schedules>
-                {dailyEmptySchedule.map((schedule) => (
-                  <li key={schedule}>
-                    <button type="button" onClick={() => handleClickSchedule(schedule)}>{schedule}</button>
-                  </li>
-                ))}
-              </Schedules>
-              <Button type="button" onClick={handleClickAdd}>추가</Button>
-            </div>
-          )
-          : (
-            <div>
-              피티 가능한 시간이 없다리
-            </div>
-          )}
-      </div>
+      <h1>P.T 가능한 시간</h1>
+      <Wrapper>
+        <div>
+          {dailyEmptySchedule.length
+            ? (
+              <div>
+                <Schedules>
+                  {dailyEmptySchedule.map((schedule) => (
+                    <li key={schedule}>
+                      <button
+                        type="button"
+                        className={ptTime === schedule ? 'hover' : ''}
+                        onClick={() => handleClickSchedule(schedule)}
+                      >
+                        {schedule}
+                      </button>
+                    </li>
+                  ))}
+                </Schedules>
+                <Button type="button" onClick={handleClickAdd}>추가</Button>
+              </div>
+            )
+            : (
+              <div>
+                예약 가능한 시간이 없습니다.
+              </div>
+            )}
+        </div>
+      </Wrapper>
     </Container>
   );
 }

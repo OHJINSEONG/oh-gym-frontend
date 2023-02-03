@@ -16,4 +16,12 @@ describe('trainerStore', () => {
       expect(trainerStore.trainer.name).toEqual('오진욱');
     });
   });
+
+  describe('fetchTrainers', () => {
+    it('fetchTrainers', async () => {
+      await trainerStore.fetchTrainers();
+
+      expect(trainerStore.trainers.length).toEqual(2);
+    });
+  });
 });

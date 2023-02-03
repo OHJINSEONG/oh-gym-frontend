@@ -6,12 +6,14 @@ export default class LectureStore extends Store {
     super();
     this.userLectures = [];
     this.trainerLectures = [];
-    this.dailyUserLectures = [];
+    this.dailyUserLecture = {};
     this.dailyEmptySchedule = [];
+    this.schedules = [];
+    this.emptySchedules = [];
   }
 
-  async fetchUserLectures(userId) {
-    const userLectures = await apiService.fetchUserLectures(userId);
+  async fetchUserLectures() {
+    const userLectures = await apiService.fetchUserLectures();
 
     this.userLectures = userLectures;
 
@@ -21,22 +23,30 @@ export default class LectureStore extends Store {
   async makeUserSchedule(date) {
     const lectures = await apiService.fetchUserLectures();
 
-    this.dailyUserLectures = lectures
-      .filter((lecture) => lecture.date === date)
-      .map((lecture) => ({
-        ...lecture,
-        time: (lecture.time.startsWith('0')
-          ? lecture.time.replace('0', '')
-          : lecture.time),
-      }));
+    this.dailyUserLecture = lectures
+      .find((lecture) => lecture.date === date);
 
     this.publish();
   }
 
   async fetchTrainerSchedule(trainerId, date) {
-    const schedules = await apiService.fetchTrainerSchedules(trainerId, date);
+    const schedules = await apiService.fetchTrainerDailySchedule(trainerId, date);
 
     this.dailyEmptySchedule = schedules.emptySchedules;
+    this.schedules = schedules;
+
+    this.publish();
+  }
+
+  async fetchTrainerSchedules(trainerId) {
+    const emptySchedules = await apiService.fetchTrainerSchedules(trainerId);
+
+    this.emptySchedules = emptySchedules;
+    this.publish();
+  }
+
+  async cancel(lectureId) {
+    await apiService.lectureCancel(lectureId);
 
     this.publish();
   }

@@ -20,13 +20,15 @@ export default class ExerciseFormStore extends Store {
     this.publish();
   }
 
-  addExerciseForm(setId) {
+  addExerciseForm(set) {
     const lastSetForm = this.setForms.length
       ? this.setForms[this.setForms.length - 1]
-      : { setNumber: 0, weight: 0, reps: 0 };
+      : {
+        setNumber: 0, weight: 0, reps: 0, status: 'CREATED',
+      };
 
     const input = {
-      id: setId,
+      id: set.id,
       setNumber: lastSetForm.setNumber + 1,
       weight: lastSetForm.weight,
       reps: lastSetForm.reps,

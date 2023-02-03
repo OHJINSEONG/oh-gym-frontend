@@ -44,13 +44,13 @@ export default function ChattingListPage() {
       stompClient.current.subscribe(`/sub/user/${user.email}`, () => {
         console.log('hi');
         stompClient.current.send(
-          '/pub/user/chat/enter',
+          '/pub/user/chatList/enter',
           { Authorization: `Bearer ${accessToken}` },
         );
       });
 
       stompClient.current.send(
-        '/pub/user/chat/enter',
+        '/pub/user/chatList/enter',
         { Authorization: `Bearer ${accessToken}` },
       );
     });

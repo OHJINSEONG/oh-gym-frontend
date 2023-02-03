@@ -15,6 +15,12 @@ export default class ChatStore extends Store {
       .map((chatmassage) => (chatmassage.writer === userName
         ? { ...chatmassage, user: 'myChat' }
         : { ...chatmassage, user: 'otherChat' }))
+      .map((chat, index) => (index === 0
+        ? { ...chat, status: 'new' }
+        : this.compareTime(chatmassages[index - 1].time, chat.time)
+          ? { ...chat, status: '' }
+          : { ...chat, status: 'new' }
+      ))
       .map((chat, index) => (index === chatmassages.length - 1
         ? { ...chat, time: this.setKoTime(chat.time) }
         : this.compareTime(chatmassages[index + 1].time, chat.time)
@@ -29,17 +35,7 @@ export default class ChatStore extends Store {
           : chatmassage
       ));
 
-    // this.setTimes(this.chats);
-
     this.publish();
-  }
-
-  async setTimes(chats) {
-    this.chats = chats;
-  }
-
-  async checkMessages(roomId) {
-    await apiService.checkChats(roomId);
   }
 
   compareTime(time1, time2) {
