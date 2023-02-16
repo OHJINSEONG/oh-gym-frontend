@@ -31,6 +31,14 @@ export default class UserStore extends Store {
     return loginInfomation;
   }
 
+  async testLogin() {
+    const accessToken = await apiService.testLogin();
+
+    this.publish();
+
+    return accessToken;
+  }
+
   async kakaoLogout(kakaoAccessToken) {
     await apiService.kakaoLogout(kakaoAccessToken);
 

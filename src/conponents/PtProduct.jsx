@@ -326,6 +326,8 @@ export default function PtProduct({ slideMode, setSlideMode, product }) {
   const handleClickChat = async () => {
     const chattingRoom = await chattingRoomStore.create(product.trainerId);
 
+    console.log(chattingRoom);
+
     navigator(`/myPage/chats/${chattingRoom.id}`);
   };
 

@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
 
 const Container = styled.div`
   position: fixed;
@@ -54,10 +55,15 @@ const Wrapper = styled.nav`
 `;
 
 export default function Header() {
+  const [accessToken] = useLocalStorage('accessToken', '');
   const location = useLocation();
   const navigator = useNavigate();
 
   const path = location.pathname;
+
+  if (!accessToken) {
+    return (null);
+  }
 
   if (path.includes('diarys/') || path.includes('exercises/') || path.includes('order/') || path.includes('chats/')) {
     return (

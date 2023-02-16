@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-expressions */
 import { useEffect } from 'react';
-import { useState } from 'react';
 
 import styled from 'styled-components';
 import useLectureStore from '../hooks/useLectureStore';
@@ -92,7 +91,6 @@ export default function ChangeLecture({
   };
 
   const handleClickAdd = () => {
-    console.log(date);
     messageStore.sendRequest({
       receiverId: trainerId,
       type: 'requestPt',
@@ -104,7 +102,7 @@ export default function ChangeLecture({
   };
 
   useEffect(() => {
-    console.log(lectureStore.schedules);
+
   }, [ptTime]);
 
   if (value < new Date()) {

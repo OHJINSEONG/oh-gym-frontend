@@ -98,8 +98,6 @@ const server = setupServer(
   rest.get(`${baseUrl}/orders/kakaoPaySuccess`, async (req, res, ctx) => {
     const token = await req.url.searchParams.get('pg_token');
 
-    console.log(token);
-
     if (token === '토큰') {
       return res(
         ctx.json({ item_name: 'PT', amount: { total: 100000 } }),

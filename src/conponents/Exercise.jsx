@@ -173,8 +173,10 @@ export default function Exercise({ exerciseId, value, setValue }) {
     // eslint-disable-next-line no-shadow
     const exercise = await exerciseStore.find(exerciseId);
 
+    const sets = exercise.sets.sort((a, b) => a.setNumber - b.setNumber);
+
     // eslint-disable-next-line no-unused-expressions
-    exercise.sets.length ? exerciseFormStore.fetchSetForms(exercise.sets)
+    exercise.sets.length ? exerciseFormStore.fetchSetForms(sets)
       : await addInput();
   };
 

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
 import config from '../../config';
+import useUserStore from '../hooks/useUserStore';
 
 const Container = styled.div`
   display: flex;
@@ -18,16 +20,6 @@ const Container = styled.div`
     padding-left: 15px;
     color: #D1D1D1;
     border: 1px solid #D1D1D1;
-  }
-  
-  button {
-    width: 100%;
-    margin-top: 10px;
-    height: 50px;
-    background-color: black;
-    color:white;
-    font-weight: 600;
-    border-radius: 5px;
   }
 
   a {
@@ -87,11 +79,40 @@ const Register = styled.div`
   }
 `;
 
+const Button1 = styled.button`
+  width: 100%;
+  margin-top: 10px;
+  height: 50px;
+  color:white;
+  font-weight: 600;
+  border-radius: 5px;
+  background-color: black;
+`;
+
+const Button2 = styled.button`
+  width: 100%;
+  margin-top: 10px;
+  height: 50px;
+  color:white;
+  font-weight: 600;
+  border-radius: 5px;
+  background-color: #EF781A;
+`;
+
 const { kakaoAuthUrl } = config;
 
 export default function LoginPage() {
+  const [, setAccessToken] = useLocalStorage('accessToken', '');
+  const userStore = useUserStore();
+
   const handleChange = () => {
     console.log('sd');
+  };
+
+  const testLogin = async () => {
+    const accessToken = await userStore.testLogin();
+
+    await setAccessToken(accessToken);
   };
 
   return (
@@ -104,7 +125,8 @@ export default function LoginPage() {
         <div>
           <input value="비밀번호" onChange={handleChange} />
         </div>
-        <button type="button">로그인</button>
+        <Button2 type="button" onClick={testLogin}>테스트 계정으로 바로 로그인</Button2>
+        <Button1 type="button">로그인</Button1>
         <a href={kakaoAuthUrl}>
           <p>
             <img src="assets/images/kakaoTalk.png" />

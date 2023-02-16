@@ -21,8 +21,6 @@ describe('exerciseFormStore', () => {
 
       exerciseFormStore.deleteExerciseInformation(1);
 
-      console.log(exerciseFormStore.setForms);
-
       expect(exerciseFormStore.setForms[0].weight).toEqual(0);
     });
   });

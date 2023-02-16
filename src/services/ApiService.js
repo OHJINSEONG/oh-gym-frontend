@@ -72,8 +72,6 @@ export default class ApiService {
   async fetchTrainerSchedules(trainerId) {
     const { data } = await axios.get(`${baseUrl}/schedules/list?trainerId=${trainerId}`);
 
-    console.log(data);
-
     return data;
   }
 
@@ -83,8 +81,6 @@ export default class ApiService {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
-
-    console.log(data);
 
     return data;
   }
@@ -144,15 +140,11 @@ export default class ApiService {
       },
     });
 
-    console.log(data);
-
     return data;
   }
 
   async findByIdDiary(diaryId) {
     const { data } = await axios.get(`${baseUrl}/diarys/${diaryId}`);
-
-    console.log(data);
 
     return data;
   }
@@ -169,8 +161,6 @@ export default class ApiService {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
-
-    console.log(data);
     return data;
   }
 
@@ -185,15 +175,11 @@ export default class ApiService {
       },
     });
 
-    console.log(data);
-
     return data;
   }
 
   async lockerTicketUnUse(lockerTicketId) {
     const { data } = await axios.patch(`${baseUrl}/locker-tickets/${lockerTicketId}/cancel`);
-
-    console.log(data);
 
     return data;
   }
@@ -211,8 +197,6 @@ export default class ApiService {
       },
     });
 
-    console.log(data);
-
     return data;
   }
 
@@ -222,8 +206,6 @@ export default class ApiService {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
-
-    console.log(data);
 
     return data;
   }
@@ -278,6 +260,12 @@ export default class ApiService {
 
   async createUser(kakaoAccessToken) {
     const { data } = await axios.post(`${baseUrl}/users`, { kakaoAccessToken });
+
+    return data;
+  }
+
+  async testLogin() {
+    const { data } = await axios.get(`${baseUrl}/users/test`);
 
     return data;
   }

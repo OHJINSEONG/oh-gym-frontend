@@ -47,8 +47,6 @@ describe('diaryStore', () => {
     it('create', async () => {
       await diaryStore.create('2022-12-25');
 
-      console.log(diaryStore.diary);
-
       expect(diaryStore.diary.diary.date).toEqual('2022-12-25');
     });
   });

@@ -72,6 +72,10 @@ export default function BottomNavigator() {
 
   const path = location.pathname;
 
+  if (!accessToken) {
+    return (null);
+  }
+
   if (path.includes('/order/')) {
     return (null);
   }
@@ -105,17 +109,9 @@ export default function BottomNavigator() {
           <li>
             <Link to="/trainers">Trainers</Link>
           </li>
-          {accessToken
-            ? (
-              <li>
-                <Link className="noborder" to="/myPage">MyPage</Link>
-              </li>
-            )
-            : (
-              <li>
-                <Link className="noborder" to="/login">Login</Link>
-              </li>
-            ) }
+          <li>
+            <Link className="noborder" to="/myPage">MyPage</Link>
+          </li>
         </ul>
       </NavigatorWrapper>
     </Container>

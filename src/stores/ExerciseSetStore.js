@@ -29,8 +29,6 @@ export default class ExerciseSetStore extends Store {
 
     this.sets = sets;
 
-    console.log(sets);
-
     this.publish();
   }
 }

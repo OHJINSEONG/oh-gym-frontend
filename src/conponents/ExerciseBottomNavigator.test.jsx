@@ -15,7 +15,7 @@ describe('Exercise', () => {
 
     await waitFor(() => {
       screen.getByText('이전');
-      screen.getByText('1세트 완료');
+      screen.getByText('풀업');
       screen.getByText('다음');
     });
   });
