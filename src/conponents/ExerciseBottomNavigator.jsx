@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSpring, animated } from 'react-spring';
 import { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import useDiaryStore from '../hooks/useDiaryStore';
 import useExerciseStore from '../hooks/useExerciseStore';
 import useSetStore from '../hooks/useSetStore';
@@ -23,7 +24,6 @@ const Container = styled.div`
   width: 100%;
   height: 150px;
   background-color: white;
-  border: 1px solid #D1D1D1;
 `;
 
 const Navigators = styled.ul`
@@ -54,6 +54,7 @@ const WorkoutButtons = styled.ul`
     align-items: center;
     width: 100%;
     height: 70px;
+    border: 1px solid #D1D1D1;
       
     li{
       display: flex;
@@ -77,7 +78,7 @@ const WorkoutButtons = styled.ul`
 const Wrapper = styled.nav`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -87,9 +88,10 @@ export default function ExerciseBottomNavigator({
   value, value2, setValue, exerciseId,
 }) {
   const [slideMode, setSlideMode] = useState(false);
+  const [workoutMode] = useLocalStorage('workoutMode', false);
 
   const props = useSpring({
-    top: slideMode ? -570 : 200,
+    top: slideMode ? -470 : 200,
     position: 'absolute',
     bottom: 0,
     backgroundColor: 'white',
@@ -193,33 +195,37 @@ export default function ExerciseBottomNavigator({
         <ExerciseList setSlideMode={setSlideMode} setValue={setValue} />
       </animated.div>
       <Wrapper>
-        <WorkoutButtons>
-          <SetTimer />
-          <li>
-            {findSet
+        {workoutMode
+          ? (
+            <WorkoutButtons>
+              <SetTimer />
+              <li>
+                {findSet
             && exerciseStore.exercise.sets?.filter((e) => e.status === 'COMPLETE').length
             !== exerciseStore.exercise.sets?.length
-              ? (
-                <button type="button" onClick={handleClickComplete}>
-                  {exerciseStore.exercise.sets.filter((e) => e.status === 'COMPLETE').length + 1}
-                  세트
-                  완료
-                </button>
-              )
-              : diaryStore.diary.exerciseInformations
-                ?.filter((e) => e.exercise.status === 'COMPLETE').length !== diaryStore.diary.exerciseInformations?.length
-                ? (
-                  <button type="button" onClick={exerciseComplete}>
-                    운동 완료
-                  </button>
-                )
-                : (
-                  <button type="button" onClick={handleClickDiaryRegister}>
-                    운동 기록하러가기
-                  </button>
-                )}
-          </li>
-        </WorkoutButtons>
+                  ? (
+                    <button type="button" onClick={handleClickComplete}>
+                      {exerciseStore.exercise.sets.filter((e) => e.status === 'COMPLETE').length + 1}
+                      세트
+                      완료
+                    </button>
+                  )
+                  : diaryStore.diary.exerciseInformations
+                    ?.filter((e) => e.exercise.status === 'COMPLETE').length !== diaryStore.diary.exerciseInformations?.length
+                    ? (
+                      <button type="button" onClick={exerciseComplete}>
+                        운동 완료
+                      </button>
+                    )
+                    : (
+                      <button type="button" onClick={handleClickDiaryRegister}>
+                        운동 기록하러가기
+                      </button>
+                    )}
+              </li>
+            </WorkoutButtons>
+          )
+          : null}
         <Navigators>
           <li>
             <button type="button" onClick={handleClickPrevious}>이전</button>

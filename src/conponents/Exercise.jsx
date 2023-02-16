@@ -159,7 +159,14 @@ export default function Exercise({ exerciseId, value, setValue }) {
 
   const addInput = async () => {
     const set = await exerciseSetStore.createSet(exerciseId);
-    exerciseFormStore.addExerciseForm(set);
+    await exerciseFormStore.addExerciseForm(set);
+
+    setValue((e) => e + 1);
+  };
+
+  const deleteInput = async () => {
+    await exerciseSetStore.delete(setForms[setForms.length - 1].id);
+    await exerciseFormStore.deleteExerciseForm();
 
     setValue((e) => e + 1);
   };
@@ -192,14 +199,6 @@ export default function Exercise({ exerciseId, value, setValue }) {
 
   const handleChangeReps = (e, index) => {
     exerciseFormStore.changeReps(e, index);
-  };
-
-  const deleteInput = async () => {
-    console.log(setForms[setForms.length - 1].id);
-    await exerciseSetStore.delete(setForms[setForms.length - 1].id);
-    exerciseFormStore.deleteExerciseForm();
-
-    setValue((e) => e + 1);
   };
 
   return (

@@ -6,6 +6,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import useDiaryStore from '../hooks/useDiaryStore';
 import { dateFormatter } from '../utils/DateFormatter';
 import useExerciseStore from '../hooks/useExerciseStore';
+import useTimeStore from '../hooks/useTimeStore';
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   background-color: white;
   width: 100%;
-  height: 844px;
+  height: 600px;
 `;
 
 const ExercisePlan = styled.div`
@@ -31,7 +32,7 @@ const ExercisePlanList = styled.ul`
   justify-content: start;
   align-items: center;
   width: 100%;
-  height: 600px;
+  height: 500px;
   padding: 3px;
   border: 1px solid #D1D1D1;
 
@@ -95,7 +96,8 @@ const ExerciseAddButton = styled.button`
 `;
 
 export default function ExerciseList({ setSlideMode, setValue }) {
-  const [workoutMode] = useLocalStorage('workoutMode', false);
+  const [workoutMode, setWorkoutMode] = useLocalStorage('workoutMode', false);
+  const timeStore = useTimeStore();
   const dairyStore = useDiaryStore();
   const exerciseStore = useExerciseStore();
 
@@ -136,6 +138,18 @@ export default function ExerciseList({ setSlideMode, setValue }) {
     setValue((value) => value + 1);
   };
 
+  const handleClickExerciseStart = async () => {
+    await setWorkoutMode(true);
+    await navigator(`/diarys/${dairyStore.diary.diary.id}/exercises/${dairyStore.diary.exerciseInformations[0].exercise.id}`, {
+      state: {
+        date,
+      },
+    });
+    await setValue((value) => value + 1);
+    timeStore.start();
+    setTimeout(() => { setSlideMode(false); }, 100);
+  };
+
   return (
     <Container>
       {dairyStore.diary.diary?.status !== 'COMPLETE'
@@ -167,7 +181,11 @@ export default function ExerciseList({ setSlideMode, setValue }) {
                     운동 저장
                   </ExerciseAddButton>
                 )
-                : null}
+                : (
+                  <ExerciseAddButton type="button" onClick={handleClickExerciseStart}>
+                    운동 시작
+                  </ExerciseAddButton>
+                )}
             </ButtonWrapper>
           </ExercisePlan>
         )
