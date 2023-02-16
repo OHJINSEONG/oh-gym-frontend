@@ -6,6 +6,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import ExerciseHeader from '../conponents/ExerciseHeader';
 import useDiaryStore from '../hooks/useDiaryStore';
 import useExerciseStore from '../hooks/useExerciseStore';
+import useTimeStore from '../hooks/useTimeStore';
 import { dateFormatter } from '../utils/DateFormatter';
 
 const Container = styled.div`
@@ -71,7 +72,8 @@ const Exercise = styled.li`
 
 const ButtonWrapper = styled.div`
     display: flex;
-    justify-content: center;
+    width: 85%;
+    justify-content: space-between;
     align-items: center;  
 `;
 
@@ -86,7 +88,7 @@ const ExercsieListButton = styled.div`
 const ExerciseAddButton = styled.button`
   margin-top: 30px;
   height: 60px;
-  width: 250px;
+  width: 150px;
   border-radius: 20px;
   color: white;
   box-shadow: 0px 3px 3px 0px gray;
@@ -94,8 +96,9 @@ const ExerciseAddButton = styled.button`
 `;
 
 export default function ExerciseListPage() {
-  const [workoutMode] = useLocalStorage('workoutMode', false);
-  const dairyStore = useDiaryStore();
+  const [workoutMode, setWorkoutMode] = useLocalStorage('workoutMode', false);
+  const diaryStore = useDiaryStore();
+  const timeStore = useTimeStore();
   const [value, setValue] = useState(0);
   const exerciseStore = useExerciseStore();
 
@@ -105,17 +108,17 @@ export default function ExerciseListPage() {
 
   // eslint-disable-next-line no-shadow
   const findDiary = (date) => {
-    setTimeout(() => { dairyStore.findDiary(date); }, 1);
+    setTimeout(() => { diaryStore.findDiary(date); }, 1);
   };
 
   useEffect(() => {
     findDiary(date);
 
-    console.log(dairyStore.diary);
+    console.log(diaryStore.diary);
   }, [value]);
 
   const handleClickNavigate = (exerciseId) => {
-    navigator(`/diarys/${dairyStore.diary.diary.id}/exercises/${exerciseId}`, {
+    navigator(`/diarys/${diaryStore.diary.diary.id}/exercises/${exerciseId}`, {
       state: {
         date,
       },
@@ -123,7 +126,7 @@ export default function ExerciseListPage() {
   };
 
   const handleClickCreateDiary = async () => {
-    const createdDiary = await dairyStore.create(date);
+    const createdDiary = await diaryStore.create(date);
     navigator(`/diarys/${createdDiary.id}/exercises`, { state: { date } });
   };
 
@@ -136,18 +139,24 @@ export default function ExerciseListPage() {
     setValue(value + 1);
   };
 
+  const handleClickStart = () => {
+    const firstExerciseId = diaryStore.diary.exerciseInformations[0].exercise.id;
+    const diaryId = diaryStore.diary.diary?.id;
+
+    setWorkoutMode(true);
+
+    timeStore.start();
+
+    navigator(`/diarys/${diaryId}/exercises/${firstExerciseId}`);
+  };
+
   return (
     <Container>
-      {workoutMode
-        ? (
-          <ExerciseHeader />
-        )
-        : null}
-      {dairyStore.diary.diary?.status !== 'COMPLETE'
+      {diaryStore.diary.diary?.status !== 'COMPLETE'
         ? (
           <ExercisePlan>
             <ExerciseList>
-              {dairyStore.diary.exerciseInformations?.map((exercise, index) => (
+              {diaryStore.diary.exerciseInformations?.map((exercise, index) => (
                 <Exercise className={exercise.exercise.status} key={exercise.exercise.id}>
                   <ExercsieListButton>
                     <button type="button" onClick={() => handleClickNavigate(exercise.exercise.id)}>
@@ -172,13 +181,17 @@ export default function ExerciseListPage() {
                     운동 기록하러가기
                   </ExerciseAddButton>
                 )
-                : null}
+                : (
+                  <ExerciseAddButton type="button" onClick={handleClickStart}>
+                    운동 시작하기
+                  </ExerciseAddButton>
+                )}
             </ButtonWrapper>
           </ExercisePlan>
         )
         : (
           <div>
-            <p>운동계획이 없으삼 운동계획 세워주삼</p>
+            <p>운동계획이 없습니다</p>
             <ExerciseAddButton type="button" onClick={handleClickCreateDiary}>
               {date.split('-')[2]}
               일
