@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
@@ -15,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   background-color: white;
   width: 100%;
-  height: 600px;
+  height: 800px;
 `;
 
 const ExercisePlan = styled.div`
@@ -32,7 +32,7 @@ const ExercisePlanList = styled.ul`
   justify-content: start;
   align-items: center;
   width: 100%;
-  height: 500px;
+  height: 490px;
   padding: 3px;
   border: 1px solid #D1D1D1;
 
@@ -100,6 +100,9 @@ export default function ExerciseList({ setSlideMode, setValue }) {
   const timeStore = useTimeStore();
   const dairyStore = useDiaryStore();
   const exerciseStore = useExerciseStore();
+  const location = useLocation();
+
+  const path = location.pathname;
 
   const date = dateFormatter.localDate(new Date());
 
@@ -115,12 +118,16 @@ export default function ExerciseList({ setSlideMode, setValue }) {
   }, []);
 
   const handleClickNavigate = async (exerciseId) => {
-    await navigator(`/diarys/${dairyStore.diary.diary.id}/exercises/${exerciseId}`, {
-      state: {
-        date,
-      },
-    });
-    await setValue((value) => value + 1);
+    if (Number(path.split('exercises/')[1]) !== exerciseId) {
+      await navigator(`/diarys/${dairyStore.diary.diary.id}/exercises/${exerciseId}`, {
+        state: {
+          date,
+        },
+      });
+
+      await setValue((value) => value + 1);
+    }
+
     setTimeout(() => { setSlideMode(false); }, 100);
   };
 
@@ -181,11 +188,7 @@ export default function ExerciseList({ setSlideMode, setValue }) {
                     운동 저장
                   </ExerciseAddButton>
                 )
-                : (
-                  <ExerciseAddButton type="button" onClick={handleClickExerciseStart}>
-                    운동 시작
-                  </ExerciseAddButton>
-                )}
+                : null}
             </ButtonWrapper>
           </ExercisePlan>
         )

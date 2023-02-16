@@ -22,7 +22,7 @@ const Container = styled.div`
   font-weight: bold;
   bottom: 0%;
   width: 100%;
-  height: 150px;
+  height: auto;
   background-color: white;
 `;
 
@@ -85,19 +85,21 @@ const Wrapper = styled.nav`
 `;
 
 export default function ExerciseBottomNavigator({
-  value, value2, setValue, exerciseId,
+  value, setValue, exerciseId,
 }) {
-  const [slideMode, setSlideMode] = useState(false);
   const [workoutMode] = useLocalStorage('workoutMode', false);
 
-  const props = useSpring({
-    top: slideMode ? -470 : 200,
-    position: 'absolute',
-    bottom: 0,
-    backgroundColor: 'white',
-    height: '90vh',
-    width: '100%',
-  });
+  // const [slideMode, setSlideMode] = useState(false);
+  // const props = useSpring({
+  //   top: slideMode
+  //     ? workoutMode ? window.outerHeight - 1120 : window.outerHeight - 1190
+  //     : 200,
+  //   position: 'absolute',
+  //   bottom: 0,
+  //   backgroundColor: 'white',
+  //   height: '90vh',
+  //   width: '100%',
+  // });
 
   const navigator = useNavigate();
 
@@ -159,7 +161,9 @@ export default function ExerciseBottomNavigator({
   };
 
   const handleClickList = () => {
-    setSlideMode(true);
+    navigator('/exercises');
+
+    // setSlideMode(true);
   };
 
   const exerciseComplete = () => {
@@ -191,9 +195,9 @@ export default function ExerciseBottomNavigator({
 
   return (
     <Container>
-      <animated.div style={props}>
+      {/* <animated.div style={props}>
         <ExerciseList setSlideMode={setSlideMode} setValue={setValue} />
-      </animated.div>
+      </animated.div> */}
       <Wrapper>
         {workoutMode
           ? (
