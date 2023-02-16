@@ -17,7 +17,7 @@ const Container = styled.div`
   height: 844px;
 `;
 
-export default function AddPlanPage() {
+export default function ExercisePage() {
   const [workoutMode] = useLocalStorage('workoutMode', false);
   const [value, setValue] = useState(0);
   const [value2, setValue2] = useState(0);
@@ -28,7 +28,7 @@ export default function AddPlanPage() {
 
   useEffect(() => {
     exerciseStore.find(exerciseId);
-  }, [value]);
+  }, [value, value2]);
 
   return (
     <Container>
@@ -37,16 +37,11 @@ export default function AddPlanPage() {
           <ExerciseHeader value={value} value2={value2} />
         )
         : null}
-      {workoutMode
-        ? (
-          <ExerciseBottomNavigator
-            value={value}
-            value2={value2}
-            setValue={setValue}
-            exerciseId={exerciseId}
-          />
-        )
-        : null}
+      <ExerciseBottomNavigator
+        value={value}
+        setValue={setValue}
+        exerciseId={exerciseId}
+      />
       <Exercise value={value} setValue={setValue2} exerciseId={exerciseId} />
     </Container>
   );

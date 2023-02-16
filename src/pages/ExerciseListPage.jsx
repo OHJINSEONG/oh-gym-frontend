@@ -58,8 +58,6 @@ const Exercise = styled.li`
   box-shadow: 0px 3px 3px 0px gray;
   margin-bottom: 3px;
 
-  
-
   button{
     display: flex;
     font-size: 16px;
