@@ -1,9 +1,13 @@
-const { render } = require('@testing-library/react');
+const { render, waitFor, screen } = require('@testing-library/react');
 const { default: Header } = require('./Header');
 
 const navigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
+  useLocation: () => ({
+    pathname: '',
+  }),
+  useNavigate: () => navigate,
   // eslint-disable-next-line react/prop-types
   Link({ children, to }) {
     return (
@@ -12,11 +16,14 @@ jest.mock('react-router-dom', () => ({
       </a>
     );
   },
-  useNavigate: () => navigate,
 }));
 
-describe('header', () => {
-  it('render home', () => {
+describe('Header', () => {
+  it('render', async () => {
     render(<Header />);
+
+    await waitFor(() => {
+      screen.getByAltText('title');
+    });
   });
 });

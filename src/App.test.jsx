@@ -2,6 +2,8 @@ const { render, screen } = require('@testing-library/react');
 const { MemoryRouter } = require('react-router');
 const { default: App } = require('./App');
 
+jest.mock('react-calendar/dist/Calendar.css', () => null);
+
 test('App', () => {
   render((
     <div>
@@ -10,5 +12,5 @@ test('App', () => {
       </MemoryRouter>
     </div>));
 
-  screen.getByText(/Hello/);
+  screen.getByText(/Home/);
 });

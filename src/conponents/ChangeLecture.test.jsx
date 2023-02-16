@@ -7,6 +7,6 @@ test('schedule', async () => {
   render(<ChangeLecture todayDate={todayDate} />);
 
   await waitFor(() => {
-    screen.getByText('추가');
+    screen.getByText('예약 가능한 시간이 없습니다.');
   });
 });

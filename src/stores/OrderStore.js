@@ -6,14 +6,15 @@ export default class OrderStore extends Store {
     super();
     this.orders = [];
     this.order = {};
+    this.paymentResult = {};
   }
 
-  async create(productId) {
-    const order = await apiService.createOrder(productId);
-
-    this.order = order;
+  async create(orderImformation) {
+    const kakaoPayUrl = await apiService.createOrder(orderImformation);
 
     this.publish();
+
+    return kakaoPayUrl;
   }
 
   async fetchOrders() {
@@ -28,6 +29,14 @@ export default class OrderStore extends Store {
     const order = await apiService.findOrder(orderId);
 
     this.order = order;
+
+    this.publish();
+  }
+
+  async fetchPayResult(pgtoken) {
+    const paymentResult = await apiService.fetchPayResult(pgtoken);
+
+    this.paymentResult = paymentResult;
 
     this.publish();
   }

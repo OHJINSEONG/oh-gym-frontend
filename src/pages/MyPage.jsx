@@ -2,35 +2,40 @@ import { useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import useLectureStore from '../hooks/useLectureStore';
-
 import 'react-calendar/dist/Calendar.css';
-import useTrainerStore from '../hooks/useTrainerStore';
 
-import { useNavigate } from 'react-router-dom';
+import useLectureStore from '../hooks/useLectureStore';
+import Profile from '../conponents/Profile';
+import MyPageMenu from '../conponents/MyPageMenu';
+import Coupons from '../conponents/Coupons';
+import Padding from '../conponents/ui/Padding';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 500px;
+  width: 100%;
+  height: 844px;
+
+  h1{
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
 `;
 
 export default function MyPage() {
-  const navigator = useNavigate();
-
   const lectureStore = useLectureStore();
-  const trainerStore = useTrainerStore();
 
   useEffect(() => {
-    trainerStore.find(1);
-    lectureStore.fetchUserLectures(1);
+    lectureStore.fetchUserLectures();
   }, []);
 
   return (
     <Container>
-      <button type="button" onClick={() => navigator('calendar')}>Pt시간표</button>
+      <Profile />
+      <Coupons />
+      <MyPageMenu />
     </Container>
   );
 }

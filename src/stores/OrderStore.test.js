@@ -13,15 +13,17 @@ describe('orderStore', () => {
     it('fetchOrders', async () => {
       await orderStore.fetchOrders();
 
-      // expect(orderStore.orders.length).toEqual(2);
+      expect(orderStore.orders.length).toEqual(1);
     });
   });
 
   describe('create', () => {
     it('create', async () => {
-      await orderStore.create(1);
+      const kakaoUrl = await orderStore.create({
+        productId: 1,
+      });
 
-      expect(orderStore.order.productId).toEqual(1);
+      expect(kakaoUrl).toEqual('카카오');
     });
   });
 
@@ -30,6 +32,15 @@ describe('orderStore', () => {
       await orderStore.findOrder(1);
 
       expect(orderStore.order.productId).toEqual(1);
+    });
+  });
+
+  describe('fetchPayResult', () => {
+    it('fetchPayResult', async () => {
+      await orderStore.fetchPayResult('토큰');
+
+      expect(orderStore.paymentResult.item_name).toEqual('PT');
+      expect(orderStore.paymentResult.amount.total).toEqual(100000);
     });
   });
 });

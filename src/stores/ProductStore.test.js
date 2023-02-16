@@ -17,11 +17,11 @@ describe('productStore', () => {
     });
   });
 
-  // describe('findProduct', () => {
-  //   it('findProduct', async () => {
-  //     await productStore.findProduct(1);
+  describe('findProduct', () => {
+    it('findProduct', async () => {
+      await productStore.findProduct(1);
 
-  //     expect(productStore.product.title).toEqual('이용권');
-  //   });
-  // });
+      expect(productStore.productInformation.title).toEqual('피티');
+    });
+  });
 });

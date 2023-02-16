@@ -17,9 +17,17 @@ describe('lectureStore', () => {
     });
   });
 
+  describe('fetchTrainerSchedules', () => {
+    it('fetchTrainerSchedules', async () => {
+      await lectureStore.fetchTrainerSchedules(1);
+
+      expect(lectureStore.emptySchedules[0].trainerSchedules.length).toEqual(3);
+    });
+  });
+
   describe('fetchUserLectures', () => {
     it('fetchUserLectures', async () => {
-      await lectureStore.fetchUserLectures(1);
+      await lectureStore.fetchUserLectures();
 
       expect(lectureStore.userLectures.length).toEqual(2);
     });
@@ -27,9 +35,9 @@ describe('lectureStore', () => {
 
   describe('makeUserSchedule', () => {
     it('makeUserSchedule', async () => {
-      await lectureStore.makeUserSchedule(1, '2022-12-08');
+      await lectureStore.makeUserSchedule('2022-12-08');
 
-      expect(lectureStore.dailyUserLectures.length).toEqual(2);
+      expect(lectureStore.dailyUserLecture.userName).toEqual('오진성');
     });
   });
 });
