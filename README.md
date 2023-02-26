@@ -1,8 +1,10 @@
 # OhGym
 
+<div>
 <img width="300px" src="https://user-images.githubusercontent.com/107606892/221402935-daeb1785-2b43-4de1-a4fa-1c256aa6de36.png">
 <img width="300px" src="https://user-images.githubusercontent.com/107606892/221402840-131c3e27-e475-47ba-9035-d365e3152159.png">
 <img width="300px" src="https://user-images.githubusercontent.com/107606892/221402874-20e645ba-2009-4e6e-91e4-670fdcac7d24.png">
+</div>
 
 ## 프로젝트 소개
 OhGym은 간단하게 PT,락커 신청을 할수있고 운동일지를 쉽게 관리 할 수 있는 개인 프랜차이징 헬스장 관리 서비스입니다.
