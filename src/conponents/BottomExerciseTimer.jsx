@@ -16,7 +16,7 @@ const Container = styled.div`
   font-size: .8em;
   font-weight: bold;
   bottom: 9.5%;
-  width: 100%;
+  width: 400px;
   height: 60px;
   display: flex;
   flex-direction: column;

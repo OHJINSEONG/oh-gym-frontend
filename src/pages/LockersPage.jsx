@@ -16,7 +16,7 @@ const Container = styled.div`
   align-items: center;
   background-color: white;
   padding-top: 50px;
-  width: 100%;
+  width: 400px;
   height: 774px; 
 `;
 
@@ -362,6 +362,7 @@ export default function LockersPage() {
       consumerPhoneNumber: '010-5239-8955',
       consumerAddress: '서울',
       consumerAddressDetail: '성수동',
+      type: 'Test',
     });
     setValue(value + 1);
   };
@@ -508,7 +509,7 @@ export default function LockersPage() {
             </div>
           </LockerStatus>
           <ul>
-            {lockers.map((locker) => (
+            {lockers?.sort((a, b) => a.lockerNumber - b.lockerNumber).map((locker) => (
               <li key={locker.id} className={locker.status === 'INUSE' && locker.id === lockerInformation.locker?.id ? 'myLocker' : locker.status}>
                 <button type="button" onClick={() => handleClickReserve(locker.id)}>
                   {locker.lockerNumber}

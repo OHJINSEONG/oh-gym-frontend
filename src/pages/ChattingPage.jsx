@@ -80,7 +80,7 @@ export default function ChattingPage() {
       });
 
       stompClient.current.send(
-        '/pub/chat/messages',
+        '/pub/user/chat/messages',
         { Authorization: `Bearer ${accessToken}` },
         JSON.stringify({ roomId }),
       );
@@ -93,6 +93,12 @@ export default function ChattingPage() {
     });
 
     return () => {
+      stompClient.current.send(
+        '/pub/user/chat/messages',
+        { Authorization: `Bearer ${accessToken}` },
+        JSON.stringify({ roomId }),
+      );
+
       if (stompClient.current.connected) {
         stompClient.current.disconnect(() => {
           stompClient.current.connected = false;
@@ -106,7 +112,7 @@ export default function ChattingPage() {
       return;
     }
     stompClient.current.send(
-      '/pub/chat/message',
+      '/pub/user/chat/message',
       { Authorization: `Bearer ${accessToken}` },
       JSON.stringify({
         roomId,
@@ -114,6 +120,15 @@ export default function ChattingPage() {
         message,
       }),
     );
+
+    stompClient.current.send(
+      '/pub/chat/transfer',
+      { },
+      JSON.stringify({
+        roomId,
+      }),
+    );
+
     setMessage('');
   };
 

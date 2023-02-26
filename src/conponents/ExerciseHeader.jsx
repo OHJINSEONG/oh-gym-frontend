@@ -12,7 +12,7 @@ const Container = styled.div`
   font-weight: bold;
   width: 100%;
   height: 60px;
-  top: 8.2%;
+  top: 70px;
   background-color: white;
   border: 1px solid #D1D1D1;
   justify-content: space-between;

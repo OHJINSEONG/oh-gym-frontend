@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
 import PtProduct from '../conponents/PtProduct';
@@ -12,7 +12,7 @@ const Container = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 400px;
   height: 100%;
   padding-bottom: 60px;
   `;
@@ -36,7 +36,7 @@ const ProductWrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 100%;
+  width: 400px;
   background-color: white;
   border-top: 1px solid black;
   border-radius: 30px;
@@ -259,19 +259,17 @@ export default function ProductsPage() {
   const productStore = useProductStore();
   const { products } = productStore;
   const [membershipHover, setMembershipHover] = useState(false);
+  const navigator = useNavigate();
 
-  const [slideMode, setSlideMode] = useState(false);
-  const [product, setProduct] = useState({});
-
-  const props = useSpring({
-    y: slideMode ? 185 : 2000,
-    position: 'fixed',
-    x: 0,
-    right: 0,
-    height: '90vh',
-    width: '100%',
-    zIndex: 999,
-  });
+  // const props = useSpring({
+  //   y: slideMode ? 185 : 2000,
+  //   position: 'fixed',
+  //   x: 0,
+  //   right: 0,
+  //   height: '90vh',
+  //   width: '100%',
+  //   zIndex: 999,
+  // });
 
   useEffect(() => {
     productStore.fetchProducts();
@@ -284,17 +282,17 @@ export default function ProductsPage() {
     );
   }
 
-  const handleClickProductDetail = (selectedProduct) => {
-    setSlideMode(true);
-    setProduct(selectedProduct);
+  const handleClickProductDetail = (productId) => {
+    // setSlideMode(true);
+    navigator(`${productId}`);
   };
 
   return (
     <Padding>
       <Container>
-        <animated.div style={props}>
+        {/* <animated.div style={props}>
           <PtProduct slideMode={slideMode} setSlideMode={setSlideMode} product={product} />
-        </animated.div>
+        </animated.div> */}
         <GymPhoto>
           <img src="/assets/images/gym.png" />
         </GymPhoto>
@@ -364,7 +362,7 @@ export default function ProductsPage() {
             <PtProductList>
               {products.filter((product) => product.type === 'PT').map((product) => (
                 <li key={product.id}>
-                  <button type="button" onClick={() => handleClickProductDetail(product)}>
+                  <button type="button" onClick={() => handleClickProductDetail(product.id)}>
                     <img src={product.trainerImage} />
                     <div className="trainer">
                       <ImageInformation>

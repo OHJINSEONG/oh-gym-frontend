@@ -31,20 +31,42 @@ import ChattingListPage from './pages/ChattingListPage';
 import Kakao from './conponents/Kakao';
 import ExerciseListPage from './pages/ExerciseListPage';
 import DiaryRegister from './conponents/DiaryRegister';
-import BottmExerciseTimer from './conponents/BottomExerciseTimer';
 import OrderPage from './pages/OrderPage';
 import DiaryDetailPage from './pages/DiaryDetailPage';
 import ExercisePage from './pages/ExercisePage';
+import PtProduct from './conponents/PtProduct';
+import useNotificationStore from './hooks/useNotificationStore copy';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default function App() {
   const userStore = useUserStore();
+  const notificationStore = useNotificationStore();
   const [accessToken] = useLocalStorage('accessToken', '');
 
   useEffect(() => {
     apiService.setAccessToken(accessToken);
 
+    console.log(accessToken);
+
     if (accessToken) {
       userStore.fetchUser();
+
+      const interval = setInterval(() => notificationStore.fetchNotifications(), 5000);
+
+      // const sseEmitter = notificationStore.sseConnect();
+
+      // sseEmitter.addEventListener('sse', (event) => {
+      //   console.log(event.data);
+
+      //   notificationStore.fetchNotifications();
+      // });
+
+      return () => clearInterval(interval);
     }
   }, [accessToken]);
 
@@ -54,8 +76,7 @@ export default function App() {
       <GlobalStyle />
       <Header />
       <BottomNavigator />
-      <BottmExerciseTimer />
-      <div>
+      <Container>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/diarys" element={<DiarysPage />} />
@@ -75,6 +96,7 @@ export default function App() {
           <Route path="/myPage/orders" element={<OrdersPage />} />
           <Route path="/myPage/tickets/:ticketId" element={<TicketDetailPage />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:productId" element={<PtProduct />} />
           <Route path="/order/products/:productId/options/:optionId" element={<OrderPage />} />
           <Route path="/orders/success" element={<OrderSuccess />} />
           <Route path="/orders/cancel" element={<OrderCancel />} />
@@ -84,7 +106,7 @@ export default function App() {
           <Route path="/trainers" element={<TrainerPage />} />
           <Route path="/auth/kakao/callback" element={<Kakao />} />
         </Routes>
-      </div>
+      </Container>
     </div>
   );
 }

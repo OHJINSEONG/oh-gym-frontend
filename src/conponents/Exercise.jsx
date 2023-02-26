@@ -11,7 +11,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 18px;
-  width: 100%;
+  width: 400px;
 
   input {
     padding-bottom: 5px;

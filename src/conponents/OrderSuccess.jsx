@@ -75,13 +75,55 @@ export default function OrderSuccess() {
   const { paymentResult } = orderStore;
 
   useEffect(() => {
-    orderStore.fetchPayResult(pgToken);
+    if (pgToken) {
+      orderStore.fetchPayResult(pgToken);
+    }
     console.log(paymentResult);
   }, []);
 
   const handleClickHome = () => {
     navigate('/myPage/tickets');
   };
+
+  if (!pgToken) {
+    return (
+      <PaddingTop>
+        <Container>
+          <h2>OH GYM</h2>
+          <h1>결제가 정상적으로 완료되었습니다</h1>
+          <Wrapper>
+            <div>
+              <h3>-구매처:</h3>
+              <p>OH-Gym(오진성)</p>
+            </div>
+            <div>
+              <h3>-상품명:</h3>
+              <p>피티 12회</p>
+            </div>
+            <div>
+              <h3>-결제일시:</h3>
+              <p>{dateFormatter.localDateTime(new Date())}</p>
+            </div>
+            <div>
+              <h3>-결제금액:</h3>
+              <p>
+                360,000
+                원
+              </p>
+            </div>
+          </Wrapper>
+          <div>
+            <button
+              type="button"
+              onClick={handleClickHome}
+            >
+              이용권 보러가기
+            </button>
+          </div>
+        </Container>
+      </PaddingTop>
+    );
+  }
 
   if (!paymentResult.amount) {
     return <p>now loading</p>;

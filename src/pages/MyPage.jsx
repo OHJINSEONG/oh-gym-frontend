@@ -8,14 +8,13 @@ import useLectureStore from '../hooks/useLectureStore';
 import Profile from '../conponents/Profile';
 import MyPageMenu from '../conponents/MyPageMenu';
 import Coupons from '../conponents/Coupons';
-import Padding from '../conponents/ui/Padding';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 400px;
   height: 844px;
 
   h1{

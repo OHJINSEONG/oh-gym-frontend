@@ -96,6 +96,10 @@ export default function BottomNavigator() {
     return (null);
   }
 
+  if (path.includes('products/')) {
+    return (null);
+  }
+
   return (
     <Container>
       <NavigatorWrapper>

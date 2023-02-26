@@ -14,6 +14,7 @@ const Container = styled.div`
   align-items: center;
   padding-top: 140px;
   background-color: white;
+  width: 400px;
   height: 844px;
 
   h2{
@@ -86,6 +87,8 @@ export default function DiaryRegister() {
       memo,
       time: `${timeStore.hours}:${timeStore.minutes}:${timeStore.seconds}`,
     });
+
+    timeStore.stop();
 
     setWorkoutMode(false);
 

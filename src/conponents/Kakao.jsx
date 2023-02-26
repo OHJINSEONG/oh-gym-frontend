@@ -9,6 +9,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 400px;
   height: 500px;
 
   @keyframes spinCircle {
@@ -24,9 +25,7 @@ const Container = styled.div`
   .loadingBox .circle {position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); width:40px; height:40px; border:10px solid #EF781A; border-top:10px solid white; border-radius:50em;
     animation-name:spinCircle;
     animation-duration:.8s;
-    animation-iteration-count:infinite;}
- 
-  
+    animation-iteration-count:infinite;} 
 `;
 
 const code = new URL(window.location.href).searchParams.get('code');
@@ -40,14 +39,17 @@ export default function Kakao() {
   const navigate = useNavigate();
 
   const getAccessToken = async () => {
-    const { kakaoAccessToken, accessToken } = await userStore.kakaoLogin(code);
+    const loginInformation = await userStore.kakaoLogin(code);
 
-    setKakaoAccessToken(kakaoAccessToken);
+    if (userStore.errorMessage) {
+      navigate('/');
+      return;
+    }
 
-    console.log(accessToken);
+    setKakaoAccessToken(loginInformation.kakaoAccessToken);
 
-    if (accessToken) {
-      setAccessToken(accessToken);
+    if (loginInformation.accessToken) {
+      setAccessToken(loginInformation.accessToken);
 
       navigate('/myPage');
 

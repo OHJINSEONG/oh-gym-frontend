@@ -2,8 +2,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSpring, animated } from 'react-spring';
-import { useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import useDiaryStore from '../hooks/useDiaryStore';
 import useExerciseStore from '../hooks/useExerciseStore';
@@ -12,7 +10,6 @@ import { timeStore } from '../stores/TimeStore';
 
 import { dateFormatter } from '../utils/DateFormatter';
 import SetTimer from './SetTimer';
-import ExerciseList from './ExerciseList';
 import useExerciseFormStore from '../hooks/useExerciseFormStore';
 import useExerciseSetStore from '../hooks/useExerciseSetStore';
 
@@ -89,18 +86,6 @@ export default function ExerciseBottomNavigator({
 }) {
   const [workoutMode] = useLocalStorage('workoutMode', false);
 
-  // const [slideMode, setSlideMode] = useState(false);
-  // const props = useSpring({
-  //   top: slideMode
-  //     ? workoutMode ? window.outerHeight - 1120 : window.outerHeight - 1190
-  //     : 200,
-  //   position: 'absolute',
-  //   bottom: 0,
-  //   backgroundColor: 'white',
-  //   height: '90vh',
-  //   width: '100%',
-  // });
-
   const navigator = useNavigate();
 
   const exerciseFormStore = useExerciseFormStore();
@@ -166,13 +151,13 @@ export default function ExerciseBottomNavigator({
     // setSlideMode(true);
   };
 
-  const exerciseComplete = () => {
+  const exerciseComplete = async () => {
     if (exerciseStore.exercise.exercise.status === 'COMPLETE') {
       setValue(value + 1);
       return;
     }
 
-    exerciseStore.complete(exerciseId);
+    await exerciseStore.complete(exerciseId);
 
     if (Number(exerciseId) === diaryStore.diary
       .exerciseInformations[diaryStore.diary.exerciseInformations.length - 1].exercise.id) {
@@ -193,43 +178,50 @@ export default function ExerciseBottomNavigator({
     navigator('/diarys/complete');
   };
 
+  if (!workoutMode) {
+    return (
+      <Container>
+        <Wrapper>
+          <Navigators>
+            <li>
+              <button type="button" onClick={handleClickList}>운동 목록</button>
+            </li>
+          </Navigators>
+        </Wrapper>
+      </Container>
+    );
+  }
+
   return (
     <Container>
-      {/* <animated.div style={props}>
-        <ExerciseList setSlideMode={setSlideMode} setValue={setValue} />
-      </animated.div> */}
       <Wrapper>
-        {workoutMode
-          ? (
-            <WorkoutButtons>
-              <SetTimer />
-              <li>
-                {findSet
+        <WorkoutButtons>
+          <SetTimer />
+          <li>
+            {findSet
             && exerciseStore.exercise.sets?.filter((e) => e.status === 'COMPLETE').length
             !== exerciseStore.exercise.sets?.length
-                  ? (
-                    <button type="button" onClick={handleClickComplete}>
-                      {exerciseStore.exercise.sets.filter((e) => e.status === 'COMPLETE').length + 1}
-                      세트
-                      완료
-                    </button>
-                  )
-                  : diaryStore.diary.exerciseInformations
-                    ?.filter((e) => e.exercise.status === 'COMPLETE').length !== diaryStore.diary.exerciseInformations?.length
-                    ? (
-                      <button type="button" onClick={exerciseComplete}>
-                        운동 완료
-                      </button>
-                    )
-                    : (
-                      <button type="button" onClick={handleClickDiaryRegister}>
-                        운동 기록하러가기
-                      </button>
-                    )}
-              </li>
-            </WorkoutButtons>
-          )
-          : null}
+              ? (
+                <button type="button" onClick={handleClickComplete}>
+                  {exerciseStore.exercise.sets.filter((e) => e.status === 'COMPLETE').length + 1}
+                  세트
+                  완료
+                </button>
+              )
+              : diaryStore.diary.exerciseInformations
+                ?.filter((e) => e.exercise.status === 'COMPLETE').length !== diaryStore.diary.exerciseInformations?.length
+                ? (
+                  <button type="button" onClick={exerciseComplete}>
+                    운동 완료
+                  </button>
+                )
+                : (
+                  <button type="button" onClick={handleClickDiaryRegister}>
+                    운동 기록하러가기
+                  </button>
+                )}
+          </li>
+        </WorkoutButtons>
         <Navigators>
           <li>
             <button type="button" onClick={handleClickPrevious}>이전</button>

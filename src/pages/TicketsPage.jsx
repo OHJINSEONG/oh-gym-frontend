@@ -10,7 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
+  width: 400px;
   height: 774px;
   padding-top: 30px;
   background-color: white;

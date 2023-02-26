@@ -9,6 +9,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 50px;
+  width: 400px;
 `;
 
 export default function TicketDetailPage() {

@@ -10,7 +10,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 400px;
     height: 60px;
     margin-top: 40px;
 `;
@@ -111,7 +111,7 @@ export default function MyLectures({ value, setPtTime }) {
 
   useEffect(() => {
     console.log(dailyUserLecture);
-  }, []);
+  }, [value]);
 
   const handleClickCancle = async () => {
     await lectureStore.cancel(dailyUserLecture.id);
@@ -167,7 +167,7 @@ export default function MyLectures({ value, setPtTime }) {
       <h1>내 P.T 시간</h1>
       <Schedules>
         {dailyUserLecture
-          ? dailyUserLecture.status === 'RESERVATED'
+          ? dailyUserLecture.status === 'RESERVED'
             ? (
               <ScheduleInformation>
                 <div>

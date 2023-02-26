@@ -13,7 +13,7 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-color: white;
-
+  width: 400px;
   padding-top: 30px;
 
   height: 774px;
