@@ -17,7 +17,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   background-color: white;
-  width: 100%;
+  width: 400px;
   height: 774px;
   
   h1{

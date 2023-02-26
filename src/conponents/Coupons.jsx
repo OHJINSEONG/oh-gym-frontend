@@ -4,10 +4,11 @@ const MyCouponWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 400px;
   height: 60px;
   background-color: white;
   margin-top: 8px;
+  border-bottom: 1px solid #D9D9D9;
 `;
 
 const MyCoupons = styled.div`

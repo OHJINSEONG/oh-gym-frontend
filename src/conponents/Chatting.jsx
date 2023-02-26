@@ -11,8 +11,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  width: 400px;
   background-color: white;
 
   h1{
@@ -27,6 +26,36 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+`;
+
+const Fix = styled.div`
+  position: fixed;
+  padding: 0 10px;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  background-color: white;
+  z-index: 999;
+
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  h2{
+    font-size: 18px;
+    font-weight: 650;
+    margin-right: 3px;
+    margin-bottom: 4px;
+  }
+
+  button{
+    color:#EF781A;
+  }
 `;
 
 const MenuWrapper = styled.div`
@@ -56,7 +85,6 @@ const ChattingWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 8px;
-  
   background-color: white;
   width: 100%;
   height: 75%;
@@ -83,7 +111,7 @@ const ChattingOpponent = styled.div`
 const ChattingBox = styled.div`
   border-radius: 20px;
   width: 100%;
-  height: 575px;
+  height: 400px;
   overflow-y: auto;
   
 `;
@@ -116,6 +144,7 @@ const ChattingList = styled.ul`
       background: #a5d6ed;
       color: white;
       font-size: 15px;
+      z-index: 300;
     }
 
     .newChat {
@@ -128,6 +157,7 @@ const ChattingList = styled.ul`
       background: #a5d6ed;
       color: white;
       font-size: 15px;
+      z-index: 300;
     }
 
     .newChat:after {
@@ -137,6 +167,7 @@ const ChattingList = styled.ul`
       right: -7px; 
       border-top: 7px solid #a5d6ed;
       border-right: 7px solid transparent;
+      z-index: 300;
     } 
 
     .myChatTime {
@@ -157,6 +188,7 @@ const ChattingList = styled.ul`
     word-break: break-all;
     padding-left: 60px;
 
+
     div {
       position: relative;
       display: inline-block;
@@ -166,6 +198,7 @@ const ChattingList = styled.ul`
       background: #6F7B87;
       color: white;
       font-size: 15px;
+      z-index: 300;
     }
 
     .myChatTime {
@@ -188,6 +221,7 @@ const ChattingList = styled.ul`
     left: -10px;  
     border-right: 15px solid #333C44;
     border-bottom: 15px solid transparent;
+    z-index: 300;
   }
 `;
 
@@ -230,6 +264,7 @@ const List = styled.li`
       background: #6F7B87;
       color: white;
       font-size: 15px;
+      z-index: 300;
     }
 
     div:after {
@@ -239,6 +274,7 @@ const List = styled.li`
       left: -7px; 
       border-right: 7px solid #6F7B87;
       border-bottom: 7px solid transparent;
+      z-index: 300;
     } 
   }
   }
@@ -336,6 +372,14 @@ export default function Chatting({
     <PaddingTop>
       <Container className="noBottom">
         <Wrapper>
+          <Fix>
+            <button type="button" onClick={() => navigator(-1)}>이전</button>
+            <div>
+              <h2>{chattingParticipants.trainerName}</h2>
+              <p>트레이너</p>
+            </div>
+            <button type="button" onClick={() => navigator(-1)}>정보</button>
+          </Fix>
           <MenuWrapper>
             <button type="button" className="chatting">최근 톡</button>
             <button type="button" className="chattingList" onClick={() => navigator('/myPage/chats')}>상담 목록</button>

@@ -12,7 +12,8 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 400px;
+  min-height: 800px;
   background-color: white;
   padding-bottom: 150px;
 `;
@@ -68,11 +69,11 @@ const Trainer = styled.li`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
+    width: 70px;
     height: 30px;
     padding: 0 13px;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: white;
     
@@ -122,12 +123,12 @@ const TrainerName = styled.div`
   
   h2{
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
     margin-right: 3px;
   }
 
   p{
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 600;
   }
 `;
@@ -169,7 +170,7 @@ export default function TrainerPage() {
                           <p>트레이너</p>
                         </div>
                         <button type="button" onClick={() => handleClickChatting(trainer.id)}>
-                          <img src="/assets/images/chatting.png" />
+                          상담하기
                         </button>
                       </TrainerName>
                       <h3>

@@ -12,6 +12,7 @@ const ProfileWrapper = styled.div`
   width: 100%;
   padding: 40px 0;
   background-color: white;
+  border-bottom: 1px solid #D9D9D9;
   
   h2{
     font-size: 23px;

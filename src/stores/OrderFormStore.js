@@ -7,6 +7,7 @@ export default class OrderFormStore extends Store {
     this.age = '';
     this.birthDate = '';
     this.phoneNumber = '';
+    this.type = '';
   }
 
   onChangeName(value) {
@@ -29,6 +30,12 @@ export default class OrderFormStore extends Store {
 
   onChangePhoneNumber(value) {
     this.phoneNumber = value;
+
+    this.publish();
+  }
+
+  onChangeType(value) {
+    this.type = value;
 
     this.publish();
   }

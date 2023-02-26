@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { dateFormatter } from '../utils/DateFormatter';
@@ -9,9 +9,9 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
+  width: 400px;
   background-color: white;
-  min-height: 774px;
+  min-height: 600px;
 
   h1{
     font-size: 2em;
@@ -154,6 +154,27 @@ const ChattingRoomTime = styled.div`
   }
 `;
 
+const EmptyChattingRoomWrapper = styled.div`
+width: 100%;
+height: 500px;
+display: flex;
+justify-content: center;
+align-items: center;
+
+  p{
+    font-size: 1.2em;
+    margin-top: 10px;
+  }
+
+  a{
+    margin-left: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    background-color: #EF781A;
+  }
+`;
+
 export default function ChattingList({ chattingRooms }) {
   const navigator = useNavigate();
 
@@ -167,36 +188,42 @@ export default function ChattingList({ chattingRooms }) {
           </MenuWrapper>
           <ChattingBox>
             <ChattingRoomList>
-              {chattingRooms.length ? chattingRooms
-                .map((chattingRoom) => (chattingRoom.chattingRoom.message
-                  ? (
-                    <ChattingRoom key={chattingRoom.chattingRoom.id}>
-                      <button type="button" onClick={() => navigator(`${chattingRoom.chattingRoom.id}`)}>
-                        <img src={chattingRoom.chattingRoom.trainerImage} />
-                        <ChattingRoomMessage>
-                          <ChattingOpponentInformation>
-                            <OpponentName>
-                              <h2>
-                                {chattingRoom.chattingRoom.trainerName}
-                              </h2>
-                              <p>
-                                트레이너
-                              </p>
-                            </OpponentName>
-                            <p>{chattingRoom.chattingRoom.message.substring(0, 30)}</p>
-                          </ChattingOpponentInformation>
-                          <ChattingRoomTime>
-                            <h2>{dateFormatter.localTime(chattingRoom.chattingRoom.updateTime)}</h2>
-                            {chattingRoom.count
-                              ? <p>{chattingRoom.count}</p>
-                              : null}
-                          </ChattingRoomTime>
-                        </ChattingRoomMessage>
-                      </button>
-                    </ChattingRoom>
-                  )
-                  : null))
-                : <p>채팅상대가 없습니다.</p>}
+              {chattingRooms.filter((chattingRoom) => chattingRoom.chattingRoom.message).length
+                ? chattingRooms
+                  .map((chattingRoom) => (chattingRoom.chattingRoom.message
+                    ? (
+                      <ChattingRoom key={chattingRoom.chattingRoom.id}>
+                        <button type="button" onClick={() => navigator(`${chattingRoom.chattingRoom.id}`)}>
+                          <img src={chattingRoom.chattingRoom.trainerImage} />
+                          <ChattingRoomMessage>
+                            <ChattingOpponentInformation>
+                              <OpponentName>
+                                <h2>
+                                  {chattingRoom.chattingRoom.trainerName}
+                                </h2>
+                                <p>
+                                  트레이너
+                                </p>
+                              </OpponentName>
+                              <p>{chattingRoom.chattingRoom.message.substring(0, 30)}</p>
+                            </ChattingOpponentInformation>
+                            <ChattingRoomTime>
+                              <h2>{dateFormatter.localTime(chattingRoom.chattingRoom.updateTime)}</h2>
+                              {chattingRoom.count
+                                ? <p>{chattingRoom.count}</p>
+                                : null}
+                            </ChattingRoomTime>
+                          </ChattingRoomMessage>
+                        </button>
+                      </ChattingRoom>
+                    )
+                    : null))
+                : (
+                  <EmptyChattingRoomWrapper>
+                    <p>채팅상대가 없습니다.</p>
+                    <Link to="/trainers">트레이너 보러가기</Link>
+                  </EmptyChattingRoomWrapper>
+                )}
             </ChattingRoomList>
           </ChattingBox>
         </Wrapper>

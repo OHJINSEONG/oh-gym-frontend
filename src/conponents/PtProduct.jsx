@@ -1,17 +1,18 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 import useChattingRoomStore from '../hooks/useChattingRoomStore';
+import useProductStore from '../hooks/useProductStore';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 390px;
+  width: 400px;
   height: 845px;
-  z-index: 997;
+  z-index: 999;
 
   border-top-left-radius: 20px;
   border: 1px solid black;
@@ -303,25 +304,21 @@ const ProductIntroduction = styled.div`
   }
 `;
 
-export default function PtProduct({ slideMode, setSlideMode, product }) {
+export default function PtProduct() {
   const navigator = useNavigate();
   const chattingRoomStore = useChattingRoomStore();
+  const productStore = useProductStore();
 
   const scroll = useRef(null);
 
+  const { productId } = useParams();
+
+  const product = productStore.productInformation;
+
   useEffect(() => {
-    if (slideMode) {
-      document.body.style = 'overflow: hidden';
-
-      scroll?.current.scrollIntoView(false);
-    }
-
-    if (!slideMode) {
-      document.body.style = 'overflow: auto';
-    }
-
-    return () => { document.body.style = 'overflow: auto'; };
-  }, [slideMode]);
+    productStore.findProduct(productId);
+    scroll?.current.scrollIntoView(false);
+  }, []);
 
   const handleClickChat = async () => {
     const chattingRoom = await chattingRoomStore.create(product.trainerId);
@@ -334,10 +331,10 @@ export default function PtProduct({ slideMode, setSlideMode, product }) {
   return (
     <Container>
       <ProductInformationHeader>
-        <button type="button" onClick={() => setSlideMode(false)}>x</button>
+        <button type="button" onClick={() => navigator('/products')}>x</button>
         <div>
           <h1>
-            {product.trainerUserName}
+            {product?.trainerUserName}
             {' '}
           </h1>
           <p>트레이너</p>
@@ -349,13 +346,13 @@ export default function PtProduct({ slideMode, setSlideMode, product }) {
       <Wrapper>
         <TrainerPhoto>
           <div ref={scroll}>
-            <img src={product.trainerImage} />
+            <img src={product?.trainerImage} />
           </div>
         </TrainerPhoto>
         <IntroductionWrapper>
           <Introduction>
             <h1>
-              {product.trainerUserName}
+              {product?.trainerUserName}
               {' '}
               <p>트레이너</p>
             </h1>
@@ -363,7 +360,7 @@ export default function PtProduct({ slideMode, setSlideMode, product }) {
               <p>
                 오짐 트레이너
                 {' '}
-                {product.trainerUserName}
+                {product?.trainerUserName}
                 {' '}
                 입니다. 10여년의 헬스 경력
               </p>
@@ -400,7 +397,7 @@ export default function PtProduct({ slideMode, setSlideMode, product }) {
             </li>
           </ul>
           <Product>
-            {product.options?.map((option) => (
+            {product?.options?.map((option) => (
               <li key={option.id}>
                 <button type="button" onClick={() => navigator(`/order/products/${product.id}/options/${option.id}`)}>
                   <ProductUpperWrapper>

@@ -5,6 +5,7 @@ export default class UserStore extends Store {
   constructor() {
     super();
     this.user = {};
+    this.errorMessage = '';
   }
 
   async fetchUser() {
@@ -23,12 +24,20 @@ export default class UserStore extends Store {
     return accessToken;
   }
 
+  // eslint-disable-next-line consistent-return
   async kakaoLogin(code) {
-    const loginInfomation = await apiService.kakaoLogin(code);
+    try {
+      const loginInfomation = await apiService.kakaoLogin(code);
+      this.publish();
 
-    this.publish();
+      return loginInfomation;
+    } catch (e) {
+      const { message } = e.response.data;
 
-    return loginInfomation;
+      this.errorMessage = message;
+
+      this.publish();
+    }
   }
 
   async testLogin() {

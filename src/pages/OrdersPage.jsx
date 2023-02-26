@@ -10,6 +10,7 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: center;
   padding-top: 50px;
+  width: 400px;
   min-height: 774px;
   background-color: white;
 

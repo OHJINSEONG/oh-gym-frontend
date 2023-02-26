@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
-import ExerciseHeader from '../conponents/ExerciseHeader';
 import useDiaryStore from '../hooks/useDiaryStore';
 import useExerciseStore from '../hooks/useExerciseStore';
 import useTimeStore from '../hooks/useTimeStore';
@@ -16,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   background-color: white;
   padding-top: 70px;
-  width: 100%;
+  width: 400px;
   height: 844px;
 `;
 

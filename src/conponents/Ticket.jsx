@@ -25,6 +25,24 @@ const Container = styled.div`
     border-bottom: 1px solid #D9D9D9;
     padding-bottom: 5px;
   }
+
+  @keyframes blink-effect {
+    0% {
+      opacity: 100%;
+    }
+
+    50% {
+      opacity: 30%;
+    }
+
+    100% {
+      opacity: 100%;
+    }
+  }
+
+  .myTicket{
+      animation: blink-effect 2.5s infinite;
+  }
 `;
 
 const Wrapper = styled.div` 
@@ -204,10 +222,10 @@ export default function Ticket() {
               </TicketInformation>
               <ButtonWrapper>
                 <button type="button" onClick={() => navigator('/products')}>
-                  상품 보기
+                  상품 구입하기
                   <img src="assets/images/shopping.png" />
                 </button>
-                <button type="button" onClick={() => navigator('/myPage/tickets')}>
+                <button type="button" className="myTicket" onClick={() => navigator('/myPage/tickets')}>
                   내 회원권
                   <img src="assets/images/membership.png" />
                 </button>

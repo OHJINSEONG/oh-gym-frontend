@@ -14,6 +14,7 @@ const Container = styled.form`
   background-color: white;
   padding-bottom: 70px;
   overflow-y: auto; 
+  width: 100%;
 `;
 
 export default function HomePage() {

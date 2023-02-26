@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
+import useNotificationStore from '../hooks/useNotificationStore copy';
+import NotificationsModal from './modals/NotificationsModal';
 
 const Container = styled.div`
   position: fixed;
@@ -14,20 +17,6 @@ const Container = styled.div`
   z-index: 900;
   border-bottom: 1px solid #D1D1D1;
 
-  ul{
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      height: 100%;
-      
-    li{
-      display: flex;
-      justify-content:center;
-      align-items: center;
-      margin: 15px;
-    }
-  }
-  
   div{
     display: flex;
     width: auto;
@@ -54,10 +43,46 @@ const Wrapper = styled.nav`
   }
 `;
 
+const List = styled.ul`
+  display: flex;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+`;
+
+const Navi = styled.li`
+  display: flex;
+      justify-content:center;
+      align-items: center;
+      margin: 15px;
+`;
+
+const Alarm = styled.div`
+  top: -40%;
+  left: 80%;
+  position: relative;
+  z-index: 999;
+  background-color: red;
+  padding: 4px;
+  border-radius: 50%;
+`;
+
 export default function Header() {
   const [accessToken] = useLocalStorage('accessToken', '');
   const location = useLocation();
   const navigator = useNavigate();
+  const [modalMode, setModalMode] = useState('');
+
+  const notificationStore = useNotificationStore();
+
+  const handleClickCheckNotifications = async () => {
+    await notificationStore.checkNotifications();
+
+    // eslint-disable-next-line no-unused-expressions
+    modalMode !== 'notification'
+      ? setModalMode('notification')
+      : setModalMode('');
+  };
 
   const path = location.pathname;
 
@@ -65,35 +90,39 @@ export default function Header() {
     return (null);
   }
 
-  if (path.includes('diarys/') || path.includes('exercises/') || path.includes('order/') || path.includes('chats/')) {
+  if (path.includes('diarys/') || path.includes('exercises/') || path.includes('order/products/')) {
     return (
       <Container>
         <Wrapper>
-          <ul>
-            <li>
+          <List>
+            <Navi>
               <button type="button" onClick={() => navigator(-1)}>이전</button>
-            </li>
-            <li>
+            </Navi>
+            <Navi>
               <img src="/assets/images/alarm.png" />
-            </li>
-          </ul>
+            </Navi>
+          </List>
         </Wrapper>
       </Container>
     );
+  }
+
+  if (path.includes('products/') || path.includes('chats/')) {
+    return (null);
   }
 
   if (path.includes('myPage/')) {
     return (
       <Container>
         <Wrapper>
-          <ul>
-            <li>
+          <List>
+            <Navi>
               <button type="button" className="myPage" onClick={() => navigator('/myPage')}>MyPage</button>
-            </li>
-            <li>
+            </Navi>
+            <Navi>
               <img src="/assets/images/alarm.png" />
-            </li>
-          </ul>
+            </Navi>
+          </List>
         </Wrapper>
       </Container>
     );
@@ -101,35 +130,54 @@ export default function Header() {
 
   return (
     <Container>
+      {modalMode === 'notification'
+        ? <NotificationsModal setModalMode={setModalMode} modalMode={modalMode} />
+        : null}
       <Wrapper>
-        <ul>
-          <li>
+        <List>
+          <Navi>
             <Link to="/">
               <img
                 alt="title"
                 src="/assets/images/title.png"
               />
             </Link>
-          </li>
+          </Navi>
           <div>
-            <li>
-              <Link to="/products">
-                <img
-                  alt="alarm"
-                  src="/assets/images/alarm.png"
-                />
-              </Link>
-            </li>
-            <li>
-              <Link to="/products">
+            <Navi>
+              {notificationStore.notifications
+                .filter((notification) => notification.status !== 'CHECKED').length
+                ? <Alarm />
+                : null}
+              <button
+                type="button"
+                onClick={handleClickCheckNotifications}
+              >
+                {modalMode === 'notification'
+                  ? (
+                    <img
+                      alt="alarm-used"
+                      src="/assets/images/alarm-used.png"
+                    />
+                  )
+                  : (
+                    <img
+                      alt="alarm"
+                      src="/assets/images/alarm.png"
+                    />
+                  )}
+              </button>
+            </Navi>
+            <Navi>
+              <button type="button" to="/products">
                 <img
                   alt="setting"
                   src="/assets/images/setting.png"
                 />
-              </Link>
-            </li>
+              </button>
+            </Navi>
           </div>
-        </ul>
+        </List>
       </Wrapper>
     </Container>
   );

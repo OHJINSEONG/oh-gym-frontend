@@ -17,7 +17,7 @@ const Container = styled.div`
   align-items: center;
   background-color: white;
   padding-top: 30px;
-  width: 100%;
+  width: 400px;
   height: 450px;
 
   h1{
@@ -39,10 +39,29 @@ const Container = styled.div`
     margin-bottom: 15px;
   }
 
+  @keyframes blink-effect {
+    0% {
+      opacity: 100%;
+    }
+
+    50% {
+      opacity: 30%;
+    }
+
+    100% {
+      opacity: 100%;
+    }
+  }
+
+  .recommend{
+      animation: blink-effect 2.5s infinite;
+  }
+
   .start{
     color:white;
     background-color: #EF781A;
     border :none;
+    animation: blink-effect 2.5s infinite;
   }
 `;
 
@@ -74,6 +93,11 @@ const ExerciseList = styled.ul`
   overflow-x: auto;
   padding-bottom: 5px;
   margin-top: 10px;
+  
+  .alarm{
+    font-size: 16px;
+    font-weight: 600;
+  }
 `;
 
 const Exercise = styled.li`
@@ -211,16 +235,16 @@ export default function ExercisePlan() {
       name: exercise.name,
       type: exercise.type,
     });
+
+    setValue(value + 1);
   };
 
   const handleClickRecommend = async () => {
     const createdDiary = await diaryStore.create(date);
 
-    for (let i = 0; i < 8; i += 1) {
+    for (let i = 0; i < 4; i += 1) {
       recommendExercise(createdDiary.id);
     }
-
-    setValue(value + 1);
   };
 
   if (diaryStore.diary.diary?.status === 'COMPLETE') {
@@ -299,13 +323,13 @@ export default function ExercisePlan() {
           : (
             <Plan>
               <ExerciseList>
-                <p>운동계획이 없습니다.</p>
+                <p className="alarm">운동계획이 없습니다.</p>
               </ExerciseList>
               <ButtonWrapper>
                 <button type="button" onClick={handleClickCreateDiary}>
                   운동 계획하기
                 </button>
-                <button type="button" onClick={handleClickRecommend}>
+                <button type="button" className="recommend" onClick={handleClickRecommend}>
                   추천 운동루틴
                 </button>
               </ButtonWrapper>
@@ -315,7 +339,6 @@ export default function ExercisePlan() {
       <DiaryButton type="button" onClick={() => navigator('/diarys')}>
         <img src="assets/images/diary.png" />
         운동일지
-
       </DiaryButton>
     </Container>
   );

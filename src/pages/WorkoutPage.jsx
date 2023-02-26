@@ -13,6 +13,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 100px;
+  width: 400px;
 `;
 
 export default function WorkoutPage() {

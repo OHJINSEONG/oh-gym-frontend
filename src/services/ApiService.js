@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
+import EventSource from 'eventsource';
 import config from '../../config';
 
 const baseUrl = config.apiBaseUrl;
@@ -371,6 +372,38 @@ export default class ApiService {
     });
 
     return data;
+  }
+
+  connectSseEmitter() {
+    const data = new EventSource(`${baseUrl}/notifications/connect`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    return data;
+  }
+
+  async fetchNotifications() {
+    const { data } = await axios.get(`${baseUrl}/notifications`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    return data;
+  }
+
+  async checkNotifications() {
+    const { data } = await axios.patch(`${baseUrl}/notifications/check`, {}, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    return data;
+  }
+
+  async deleteNotification(notificationId) {
+    await axios.delete(`${baseUrl}/notifications/${notificationId}`);
   }
 }
 

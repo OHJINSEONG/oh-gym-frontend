@@ -1,5 +1,5 @@
 const REST_API_KEY = 'f99c39ffcdf63597195c1d3678b78fde';
-const REDIRECT_URI = 'http://localhost:8080/auth/kakao/callback';
+const REDIRECT_URI = `${process.env.KAKAO_REDIRECT_URL}/auth/kakao/callback`;
 
 const config = {
   apiBaseUrl: process.env.REACT_APP_API_BASE_URL,

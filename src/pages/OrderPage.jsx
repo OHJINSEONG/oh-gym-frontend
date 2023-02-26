@@ -12,7 +12,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 400px;
   background-color: white;
   padding-bottom: 150px;
 `;
@@ -244,6 +244,7 @@ export default function OrderPage() {
       consumerPhoneNumber: orderFormStore.phoneNumber,
       consumerAddress: '',
       consumerAddressDetail: '',
+      type: orderFormStore.type,
     });
 
     window.location.href = kakaoPayUrl;
