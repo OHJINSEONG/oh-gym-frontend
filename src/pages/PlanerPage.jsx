@@ -15,7 +15,6 @@ const Container = styled.div`
   background-color: white;
   width: 400px;
   padding-top: 30px;
-
   height: 774px;
 
   li {

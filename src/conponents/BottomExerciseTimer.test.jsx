@@ -1,9 +1,9 @@
 const { render, screen, waitFor } = require('@testing-library/react');
 const { default: BottmExerciseTimer } = require('./BottomExerciseTimer');
 
-const navigate = jest.fn();
-
 const context = describe;
+
+const navigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
   useLocation: () => ({
