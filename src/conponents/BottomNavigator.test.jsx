@@ -15,7 +15,6 @@ jest.mock('react-router-dom', () => ({
       </a>
     );
   },
-
 }));
 
 describe('header', () => {

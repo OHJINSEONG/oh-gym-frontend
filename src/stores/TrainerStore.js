@@ -2,27 +2,27 @@ import { apiService } from '../services/ApiService';
 import Store from './Store';
 
 export default class TrainerStore extends Store {
-  constructor() {
-    super();
-    this.trainer = {};
-    this.trainers = [];
-  }
+    constructor() {
+        super();
+        this.trainer = {};
+        this.trainers = [];
+    }
 
-  async find(trainerId) {
-    const trainer = await apiService.findTrainer(trainerId);
+    async find(trainerId) {
+        const trainer = await apiService.findTrainer(trainerId);
 
-    this.trainer = trainer;
+        this.trainer = trainer;
 
-    this.publish();
-  }
+        this.publish();
+    }
 
-  async fetchTrainers() {
-    const trainers = await apiService.fetchTrainers();
+    async fetchTrainers() {
+        const trainers = await apiService.fetchTrainers();
 
-    this.trainers = trainers;
+        this.trainers = trainers;
 
-    this.publish();
-  }
+        this.publish();
+    }
 }
 
 export const trainerStore = new TrainerStore();

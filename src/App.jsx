@@ -38,75 +38,87 @@ import PtProduct from './conponents/PtProduct';
 import useNotificationStore from './hooks/useNotificationStore copy';
 
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 export default function App() {
-  const userStore = useUserStore();
-  const notificationStore = useNotificationStore();
-  const [accessToken] = useLocalStorage('accessToken', '');
+    const userStore = useUserStore();
+    // const notificationStore = useNotificationStore();
+    const [accessToken] = useLocalStorage('accessToken', '');
 
-  useEffect(() => {
-    apiService.setAccessToken(accessToken);
+    useEffect(() => {
+        apiService.setAccessToken(accessToken);
 
-    console.log(accessToken);
+        console.log(accessToken);
 
-    if (accessToken) {
-      userStore.fetchUser();
+        if (accessToken) {
+            userStore.fetchUser();
 
-      const interval = setInterval(() => notificationStore.fetchNotifications(), 5000);
+            // const interval = setInterval(() => notificationStore.fetchNotifications(), 5000);
 
-      // const sseEmitter = notificationStore.sseConnect();
+            // const sseEmitter = notificationStore.sseConnect();
 
-      // sseEmitter.addEventListener('sse', (event) => {
-      //   console.log(event.data);
+            // sseEmitter.addEventListener('sse', (event) => {
+            //   console.log(event.data);
 
-      //   notificationStore.fetchNotifications();
-      // });
+            //   notificationStore.fetchNotifications();
+            // });
 
-      return () => clearInterval(interval);
+            //   return () => clearInterval(interval);
+        }
+    }, [accessToken]);
+
+    if (!accessToken || !userStore.user.userName) {
+        return (
+            <div>
+                <Reset />
+                <GlobalStyle />
+                <Container>
+                    <LoginPage />
+                </Container>
+            </div>
+        );
     }
-  }, [accessToken]);
 
-  return (
-    <div>
-      <Reset />
-      <GlobalStyle />
-      <Header />
-      <BottomNavigator />
-      <Container>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/diarys" element={<DiarysPage />} />
-          <Route path="/diarys/:diaryId" element={<DiaryDetailPage />} />
-          <Route path="/diarys/:diaryId/exercises" element={<PlanerPage />} />
-          <Route path="/diarys/:diaryId/exercises/:exerciseId" element={<ExercisePage />} />
-          <Route path="/diarys/complete" element={<DiaryRegister />} />
-          <Route path="/exercises" element={<ExerciseListPage />} />
-          <Route path="/calendar" element={<LectureCalender />} />
-          <Route path="/myPage" element={<MyPage />} />
-          <Route path="/myPage/exercises/:exerciseId" element={<ExercisePage />} />
-          <Route path="/myPage/lockers" element={<LockersPage />} />
-          <Route path="/myPage/lockers/:lockerId" element={<LockersPage />} />
-          <Route path="/myPage/chats" element={<ChattingListPage />} />
-          <Route path="/myPage/chats/:chatId" element={<ChattingPage />} />
-          <Route path="/myPage/tickets" element={<TicketsPage />} />
-          <Route path="/myPage/orders" element={<OrdersPage />} />
-          <Route path="/myPage/tickets/:ticketId" element={<TicketDetailPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/:productId" element={<PtProduct />} />
-          <Route path="/order/products/:productId/options/:optionId" element={<OrderPage />} />
-          <Route path="/orders/success" element={<OrderSuccess />} />
-          <Route path="/orders/cancel" element={<OrderCancel />} />
-          <Route path="/orders/fail" element={<OrderFail />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/trainers" element={<TrainerPage />} />
-          <Route path="/auth/kakao/callback" element={<Kakao />} />
-        </Routes>
-      </Container>
-    </div>
-  );
+    return (
+        <div>
+            <Reset />
+            <GlobalStyle />
+            <Header />
+            <BottomNavigator />
+            <Container>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/diarys" element={<DiarysPage />} />
+                    <Route path="/diarys/:diaryId" element={<DiaryDetailPage />} />
+                    <Route path="/diarys/:diaryId/exercises" element={<PlanerPage />} />
+                    <Route path="/diarys/:diaryId/exercises/:exerciseId" element={<ExercisePage />} />
+                    <Route path="/diarys/complete" element={<DiaryRegister />} />
+                    <Route path="/exercises" element={<ExerciseListPage />} />
+                    <Route path="/calendar" element={<LectureCalender />} />
+                    <Route path="/myPage" element={<MyPage />} />
+                    <Route path="/myPage/exercises/:exerciseId" element={<ExercisePage />} />
+                    <Route path="/myPage/lockers" element={<LockersPage />} />
+                    <Route path="/myPage/lockers/:lockerId" element={<LockersPage />} />
+                    <Route path="/myPage/chats" element={<ChattingListPage />} />
+                    <Route path="/myPage/chats/:chatId" element={<ChattingPage />} />
+                    <Route path="/myPage/tickets" element={<TicketsPage />} />
+                    <Route path="/myPage/orders" element={<OrdersPage />} />
+                    <Route path="/myPage/tickets/:ticketId" element={<TicketDetailPage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/products/:productId" element={<PtProduct />} />
+                    <Route path="/order/products/:productId/options/:optionId" element={<OrderPage />} />
+                    <Route path="/orders/success" element={<OrderSuccess />} />
+                    <Route path="/orders/cancel" element={<OrderCancel />} />
+                    <Route path="/orders/fail" element={<OrderFail />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/trainers" element={<TrainerPage />} />
+                    <Route path="/auth/kakao/callback" element={<Kakao />} />
+                </Routes>
+            </Container>
+        </div>
+    );
 }

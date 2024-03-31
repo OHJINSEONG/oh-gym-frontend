@@ -3,73 +3,73 @@ const { default: TicketStore } = require('./TicketStore.js');
 const context = describe;
 
 describe('ticketStore', () => {
-  let ticketStore;
+    let ticketStore;
 
-  beforeEach(() => {
-    ticketStore = new TicketStore();
-  });
-
-  describe('findLockerTicket', () => {
-    it('findLockerTicket', async () => {
-      await ticketStore.findLockerTicket();
-
-      expect(ticketStore.lockerInformation.periodOfUse).toEqual(30);
+    beforeEach(() => {
+        ticketStore = new TicketStore();
     });
-  });
 
-  describe('lockerTicketUnUse', () => {
-    it('lockerTicketUnUse', async () => {
-      await ticketStore.lockerTicketUnUse(1);
+    describe('findLockerTicket', () => {
+        it('findLockerTicket', async () => {
+            await ticketStore.findLockerTicket();
 
-      expect(ticketStore.lockerInformation.status).toEqual('UNUSED');
+            expect(ticketStore.lockerInformation.periodOfUse).toEqual(30);
+        });
     });
-  });
 
-  describe('fetchPtTickets', () => {
-    it('fetchPtTickets', async () => {
-      await ticketStore.fetchPtTickets();
+    describe('lockerTicketUnUse', () => {
+        it('lockerTicketUnUse', async () => {
+            await ticketStore.lockerTicketUnUse(1);
 
-      expect(ticketStore.ptTickets.length).toEqual(2);
+            expect(ticketStore.lockerInformation.status).toEqual('UNUSED');
+        });
     });
-  });
 
-  describe('fetchMembershipTickets', () => {
-    it('fetchMembershipTickets', async () => {
-      await ticketStore.fetchMembershipTickets();
+    describe('fetchPtTickets', () => {
+        it('fetchPtTickets', async () => {
+            await ticketStore.fetchPtTickets();
 
-      expect(ticketStore.membershipTickets.length).toEqual(2);
+            expect(ticketStore.ptTickets.length).toEqual(2);
+        });
     });
-  });
 
-  describe('updatePtTicketUse', () => {
-    it('updatePtTicketUse', async () => {
-      await ticketStore.updatePtTicketUse(1, '2023-01-02');
+    describe('fetchMembershipTickets', () => {
+        it('fetchMembershipTickets', async () => {
+            await ticketStore.fetchMembershipTickets();
 
-      expect(ticketStore.inUsePtTicket.status).toEqual('INUSED');
+            expect(ticketStore.membershipTickets.length).toEqual(2);
+        });
     });
-  });
 
-  describe('updateMembershipUse', () => {
-    it('updateMembershipUse', async () => {
-      await ticketStore.updateMembershipUse(1, '2023-01-02');
+    describe('updatePtTicketUse', () => {
+        it('updatePtTicketUse', async () => {
+            await ticketStore.updatePtTicketUse(1, '2023-01-02');
 
-      expect(ticketStore.inUseMembershipTicket.status).toEqual('INUSED');
+            expect(ticketStore.inUsePtTicket.status).toEqual('INUSED');
+        });
     });
-  });
 
-  describe('findInUseMembershipTicket', () => {
-    it('findInUseMembershipTicket', async () => {
-      await ticketStore.findInUseMembershipTicket();
+    describe('updateMembershipUse', () => {
+        it('updateMembershipUse', async () => {
+            await ticketStore.updateMembershipUse(1, '2023-01-02');
 
-      expect(ticketStore.inUseMembershipTicket.status).toEqual('INUSED');
+            expect(ticketStore.inUseMembershipTicket.status).toEqual('INUSED');
+        });
     });
-  });
 
-  describe('findInUsePtTicket', () => {
-    it('findInUsePtTicket', async () => {
-      await ticketStore.findInUsePtTicket();
+    describe('findInUseMembershipTicket', () => {
+        it('findInUseMembershipTicket', async () => {
+            await ticketStore.findInUseMembershipTicket();
 
-      expect(ticketStore.inUsePtTicket.periodOfUse).toEqual(30);
+            expect(ticketStore.inUseMembershipTicket.status).toEqual('INUSED');
+        });
     });
-  });
+
+    describe('findInUsePtTicket', () => {
+        it('findInUsePtTicket', async () => {
+            await ticketStore.findInUsePtTicket();
+
+            expect(ticketStore.inUsePtTicket.periodOfUse).toEqual(30);
+        });
+    });
 });

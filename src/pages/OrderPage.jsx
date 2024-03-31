@@ -233,7 +233,7 @@ export default function OrderPage() {
   }, []);
 
   const order = async () => {
-    const kakaoPayUrl = await orderStore.create({
+    const url = await orderStore.create({
       productId,
       optionId,
       itemName: productInformation?.title,
@@ -247,7 +247,7 @@ export default function OrderPage() {
       type: orderFormStore.type,
     });
 
-    window.location.href = kakaoPayUrl;
+    window.location.href = url;
   };
 
   return (
