@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
 import EventSource from 'eventsource';
-import config from '../../config';
+import config from '../config';
 
 // const baseUrl = config.apiBaseUrl;
 const baseUrl = config.apiBaseUrl;
