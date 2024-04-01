@@ -12,8 +12,8 @@ const accessToken = JSON.parse(data);
 
 apiService.setAccessToken(accessToken);
 
-root.render((
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-));
+root.render(
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <App />
+    </BrowserRouter>
+);
