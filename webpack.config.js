@@ -1,21 +1,22 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
-    entry: './src/index.jsx', // Your entry point
+    entry: './src/index.jsx',
     output: {
-        path: path.resolve(__dirname, 'build'), // Output directory
-        filename: 'bundle.js', // Output bundle
+        path: path.resolve(__dirname, 'build'),
+        filename: 'bundle.js',
     },
     module: {
         rules: [
             {
-                test: /\.(js|jsx)$/, // Files to apply this loader to
-                exclude: /node_modules/, // Exclude the node_modules directory
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader', // Use babel-loader
+                    loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react'], // Use presets
+                        presets: ['@babel/preset-env', '@babel/preset-react'],
                     },
                 },
             },
@@ -26,8 +27,11 @@ module.exports = {
         ],
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        }),
         new HtmlWebpackPlugin({
-            template: './public/index.html', // Path to your HTML template
+            template: './public/index.html',
         }),
     ],
     resolve: {
@@ -39,8 +43,8 @@ module.exports = {
             stream: require.resolve('stream-browserify'),
             buffer: require.resolve('buffer/'),
             util: require.resolve('util/'),
-            net: false, // net는 클라이언트 사이드에서 사용할 수 없으므로 false 처리
+            net: false,
             process: require.resolve('process/browser'),
-        }, // Resolve these extensions
+        },
     },
 };

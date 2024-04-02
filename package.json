@@ -2,7 +2,7 @@
     "name": "makaogym",
     "version": "1.0.0",
     "description": "",
-    "homepage": "https://ohjinseong.github.io/oh-gym-frontend",
+    "homepage": "https://ohjinseong.github.io/oh-gym-frontend/",
     "scripts": {
         "start": "webpack serve --mode development --open",
         "build": "webpack --mode production",
