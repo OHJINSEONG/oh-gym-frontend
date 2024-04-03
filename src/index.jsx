@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import React from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { apiService } from './services/ApiService';
 
@@ -13,7 +13,7 @@ const accessToken = JSON.parse(data);
 apiService.setAccessToken(accessToken);
 
 root.render(
-    <HashRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter>
         <App />
-    </HashRouter>
+    </BrowserRouter>
 );

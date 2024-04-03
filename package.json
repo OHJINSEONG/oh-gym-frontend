@@ -2,7 +2,6 @@
     "name": "makaogym",
     "version": "1.0.0",
     "description": "",
-    "homepage": "https://ohjinseong.github.io/oh-gym-frontend/",
     "scripts": {
         "start": "webpack serve --mode development --open",
         "build": "webpack --mode production",
@@ -12,18 +11,6 @@
         "codeceptjs": "codeceptjs run --steps",
         "codeceptjs:headless": "HEADLESS=true codeceptjs run --steps",
         "codeceptjs:ui": "codecept-ui --app"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
     },
     "author": "",
     "license": "ISC",
