@@ -47,6 +47,7 @@ const MyPt = styled.div`
     color:white;
     background-color: #EF781A;
   }
+
     }
 `;
 

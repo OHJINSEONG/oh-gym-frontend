@@ -14,6 +14,14 @@ export default class MessageStore extends Store {
 
     this.publish();
   }
+
+  async findRequest() {
+    const request = await apiService.findRequset();
+
+    this.request = request;
+
+    this.publish();
+  }
 }
 
 export const messageStore = new MessageStore();
