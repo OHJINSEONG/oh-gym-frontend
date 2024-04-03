@@ -2,41 +2,41 @@ import { apiService } from '../services/ApiService';
 import Store from './Store';
 
 export default class NotificationStore extends Store {
-    constructor() {
-        super();
-        this.notification = {};
-        this.notifications = [];
-    }
+  constructor() {
+    super();
+    this.notification = {};
+    this.notifications = [];
+  }
 
-    sseConnect() {
-        const sseEmitter = apiService.connectSseEmitter();
+  sseConnect() {
+    const sseEmitter = apiService.connectSseEmitter();
 
-        return sseEmitter;
-    }
+    return sseEmitter;
+  }
 
-    async fetchNotifications() {
-        console.log('fe');
+  async fetchNotifications() {
+    console.log('fetch');
 
-        const notifications = await apiService.fetchNotifications();
+    const notifications = await apiService.fetchNotifications();
 
-        this.notifications = notifications;
+    this.notifications = notifications;
 
-        this.publish();
-    }
+    this.publish();
+  }
 
-    async checkNotifications() {
-        const notifications = await apiService.checkNotifications();
+  async checkNotifications() {
+    const notifications = await apiService.checkNotifications();
 
-        this.notifications = notifications;
+    this.notifications = notifications;
 
-        this.publish();
-    }
+    this.publish();
+  }
 
-    async delete(notificationId) {
-        await apiService.deleteNotification(notificationId);
+  async delete(notificationId) {
+    await apiService.deleteNotification(notificationId);
 
-        this.publish();
-    }
+    this.publish();
+  }
 }
 
 export const notificationStore = new NotificationStore();

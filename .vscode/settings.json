@@ -1,7 +1,9 @@
 {
-    "editor.rulers": [80],
+    "editor.rulers": [
+        80
+    ],
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
+        "source.fixAll.eslint": true
     },
     "trailing-spaces.trimOnSave": true
 }
