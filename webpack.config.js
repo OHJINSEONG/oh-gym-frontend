@@ -7,6 +7,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js',
+        publicPath: '/oh-gym-frontend/',
     },
     module: {
         rules: [
@@ -29,6 +30,7 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+            'process.env.MY_ENV': JSON.stringify(process.env.MY_ENV),
         }),
         new HtmlWebpackPlugin({
             template: './public/index.html',
